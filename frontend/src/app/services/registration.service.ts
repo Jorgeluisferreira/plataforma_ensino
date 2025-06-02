@@ -22,6 +22,11 @@ export class RegistrationService {
     return this.http.post<any>(`${this.apiUrl}`, data)
   }
 
+  //POST - login de usuario
+  login(email:string, password:string): Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/login`,{email, password});
+  }
+
   // PUT - atualiza usuário
   updateUser(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, data);

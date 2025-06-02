@@ -118,6 +118,27 @@ def delete_user(user_id):
     except Exception as e:
         conn.rollback()
         return jsonify({'error': str(e)}), 400
+    
+@app.route('/users/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+
+    cur.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, password))
+    user = cur.fetchone()
+
+    if user:
+        return jsonify({
+            'message': 'Login bem sucedido',
+            'user': {
+                'id': user[0],
+                'name': user[1],
+                'email': user[2]
+            }
+        })
+    else:
+        return jsonify({'message': 'Email ou senha incorretos'}),401
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)

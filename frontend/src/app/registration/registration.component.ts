@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegistrationService } from '../services/registration.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -23,7 +24,9 @@ export class RegistrationComponent implements OnInit {
 
   users: any[] = [];
 
-  constructor(private userService: RegistrationService) {}
+  constructor(private userService: RegistrationService,
+    private router : Router
+  ) {}
 
   ngOnInit(){
     this.loadUsers();
@@ -70,7 +73,17 @@ export class RegistrationComponent implements OnInit {
   }
 
   login(){
-
+      this.userService.login(this.email,this.password).subscribe({
+        next: (response) => {
+          console.log('Login bem sucedido', response);
+          localStorage.setItem('user',(response.user))
+          this.router.navigate(['/'])
+        },
+        error: (error) =>{
+          console.log('Falha no login', error);
+          alert('Email ou senha invalidos')
+        }
+      })
   }
 
   deleteUser(){
