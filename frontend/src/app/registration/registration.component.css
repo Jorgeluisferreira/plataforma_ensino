@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     margin: auto;
+    margin-top: 5%;
     width: 70%;
     height: 60%;
     background-color: #D1E8E2;
@@ -32,9 +33,12 @@
             border: 1px solid #333;
         };
 
-        button{
-            padding: 2px 5px;
+        .button{
+            padding: 5px 8px;
             font-size: 16px;
+            border: 1px solid #19747E;
+            border-radius: 5px;
+            background-color: white;
 
             &:hover{
                 transition: .3s;

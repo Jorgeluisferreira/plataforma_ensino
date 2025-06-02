@@ -20,7 +20,9 @@ cur.execute("""
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    birthday DATE NOT NULL
 );
 """)
 conn.commit()
@@ -30,15 +32,18 @@ conn.commit()
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.json
+    print("recebido: ", data)
     name = data['name']
     email = data['email']
+    password = data['password']
+    birthday = data['birthday']
 
     try:
         cur.execute("""
-            INSERT INTO users (name, email)
-            VALUES (%s, %s)
+            INSERT INTO users (name, email, password,birthday)
+            VALUES (%s, %s,%s,%s)
             RETURNING id;
-        """, (name, email))
+        """, (name, email,password,birthday))
         user_id = cur.fetchone()[0]
         conn.commit()
         return jsonify({'message': 'Usuário criado', 'id': user_id}), 201
@@ -54,7 +59,7 @@ def get_users():
     users = cur.fetchall()
     user_list = []
     for u in users:
-        user_list.append({'id': u[0], 'name': u[1], 'email': u[2]})
+        user_list.append({'id': u[0], 'name': u[1], 'email': u[2], 'password': u[3], 'birthday': u[4]})
     return jsonify(user_list)
 
 

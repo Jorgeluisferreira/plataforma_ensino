@@ -14,11 +14,24 @@ header{
     align-items: center;
     width: 100%;
     
+    h3{
+        cursor: pointer;
+
+        &:hover{
+            color: #D1E8E2;
+        }
+    }
+
     ul{
         list-style: none;
 
         li{
             font-size: 18px;
+            cursor: pointer;
+
+            &:hover{
+                color: #D1E8E2;
+            }
         }
     
     }

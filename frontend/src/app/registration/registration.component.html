@@ -3,16 +3,15 @@
 
     <form>
         <label>Email:</label>
-        <input type="email" placeholder="exemplo@dominio.com"/>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="exemplo@dominio.com"/>
         <label>Senha:</label>
-        <input type="password" placeholder="********" />
+        <input [(ngModel)]="password" name="password" type="password" placeholder="********" />
         
         <label [hidden]="!isRegistering" >Nome completo</label>
-        <input [hidden]="!isRegistering"type="text"/>
+        <input [(ngModel)]="name" name="name" [hidden]="!isRegistering"type="text"/>
         <label [hidden]="!isRegistering" >Data de nascimento</label>
-        <input [hidden]="!isRegistering"type="date"/>
-
-        <button type="submit">{{isRegistering ? 'Cadastar' : 'Entrar'}}</button>
+        <input [(ngModel)]="birthday" name="birthday" [hidden]="!isRegistering"type="date"/>
+        <a class="button" (click)="sendData()" type="submit">{{isRegistering ? 'Cadastrar' : 'Entrar'}}</a>
         <a (click)="toggleForm()">{{ isRegistering ? 'já possui conta ? Fazer login' : 'Não possui conta ? Cadastre-se'}}</a>
     </form>
 
