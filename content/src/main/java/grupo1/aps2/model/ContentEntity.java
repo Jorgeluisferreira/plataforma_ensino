@@ -1,16 +1,18 @@
 package grupo1.aps2.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-public class ContentEntity extends PanacheEntity {
+@Getter @Setter
+public class ContentEntity {
     
     @Id
     private long id;
     private String nome;
     private String descricao;
-    
+
 }
 
