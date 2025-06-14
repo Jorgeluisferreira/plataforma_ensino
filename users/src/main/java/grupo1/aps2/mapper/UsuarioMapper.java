@@ -12,7 +12,10 @@ import org.mapstruct.ReportingPolicy;
     unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UsuarioMapper {
 
-    UsuarioDTO map(UsuarioEntity source);
-    UsuarioEntity map(UsuarioDTO source);
+    CadastroUsuarioDTO toCadastro(UsuarioEntity source);
+    LoginUsuarioDTO toLogin(UsuarioEntity source);
+
+    UsuarioEntity fromCadastro(CadastroUsuarioDTO source);
+    UsuarioEntity fromLogin(LoginUsuarioDTO source);
 
 }
