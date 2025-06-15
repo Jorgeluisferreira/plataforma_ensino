@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class LessonEntity {
+public class AulaEntity {
     
     @Id
     private long id;
@@ -17,7 +17,7 @@ public class LessonEntity {
     private String nome;
 
     private String descricao;
-    
+
     @NotBlank
     private String contentURL;
 

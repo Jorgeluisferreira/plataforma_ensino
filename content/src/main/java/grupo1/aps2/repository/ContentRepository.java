@@ -2,8 +2,8 @@ package grupo1.aps2.repository;
 
 import java.util.List;
 
-import grupo1.aps2.model.CourseEntity;
-import grupo1.aps2.model.LessonEntity;
+import grupo1.aps2.model.AulaEntity;
+import grupo1.aps2.model.CursoEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,11 +20,11 @@ public class ContentRepository {
         em.persist(entity);
     }
 
-    public List<CourseEntity> listAllCourses() {
-        return em.createQuery("from CourseEntity", CourseEntity.class).getResultList();
+    public List<CursoEntity> listAllCourses() {
+        return em.createQuery("from CourseEntity", CursoEntity.class).getResultList();
     }
 
-    public List<LessonEntity> listAllLessons() {
-        return em.createQuery("from LessonEntity", LessonEntity.class).getResultList();
+    public List<AulaEntity> listAllLessons() {
+        return em.createQuery("from LessonEntity", AulaEntity.class).getResultList();
     }
 }

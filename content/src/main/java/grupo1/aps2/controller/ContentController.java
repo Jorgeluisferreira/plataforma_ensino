@@ -4,13 +4,12 @@ import java.util.List;
 
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
-import grupo1.aps2.dto.DTOCourse;
-import grupo1.aps2.dto.DTOLesson;
-import grupo1.aps2.mapper.ContentMapper;
-import grupo1.aps2.mapper.CourseMapper;
-import grupo1.aps2.mapper.LessonMapper;
-import grupo1.aps2.model.CourseEntity;
-import grupo1.aps2.model.LessonEntity;
+import grupo1.aps2.dto.DTOAula;
+import grupo1.aps2.dto.DTOCurso;
+import grupo1.aps2.mapper.AulaMapper;
+import grupo1.aps2.mapper.CursoMapper;
+import grupo1.aps2.model.AulaEntity;
+import grupo1.aps2.model.CursoEntity;
 import grupo1.aps2.repository.ContentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -30,46 +29,43 @@ import jakarta.ws.rs.core.Response;
 public class ContentController {
     
     @Inject
-    ContentMapper contentMapper;
+    CursoMapper cursoMapper;
     @Inject
-    CourseMapper courseMapper;
-    @Inject
-    LessonMapper lessonMapper;
-
+    AulaMapper aulaMapper;
 
     @Inject
     ContentRepository repository;
 
     @POST
     @Path("/cadastrarCurso")
-    public Response cadastrarCurso(@Valid DTOCourse.CadastroCursoDTO dto){
-        CourseEntity conteudo = courseMapper.map(dto);
+    public Response cadastrarCurso(@Valid DTOCurso.CadastroCursoDTO dto){
+        CursoEntity conteudo = cursoMapper.map(dto);
         repository.save(conteudo);
         return Response.status(Status.CREATED).build();
     }
 
     @Path("/cadastrarAula")
-    public Response cadastrarAula(@Valid DTOLesson.CadastroAulaDTO dto){
-        LessonEntity conteudo = lessonMapper.map(dto);
+    public Response cadastrarAula(@Valid DTOAula.CadastroAulaDTO dto){
+        AulaEntity conteudo = aulaMapper.map(dto);
         repository.save(conteudo);
         return Response.status(Status.CREATED).build();
     }
 
     @GET
     @Path("/lerCursos")
-    public List<DTOCourse.CadastroCursoDTO> listCourses() {
+    public List<DTOCurso.CadastroCursoDTO> listCourses() {
         return repository.listAllCourses()
                          .stream()
-                         .map(courseMapper::map)
+                         .map(cursoMapper::map)
                          .toList();
     }
 
     @GET
     @Path("/lerAulas")
-    public List<DTOLesson.CadastroAulaDTO> listLessons() {
+    public List<DTOAula.CadastroAulaDTO> listLessons() {
         return repository.listAllLessons()
                          .stream()
-                         .map(lessonMapper::map)
+                         .map(aulaMapper::map)
                          .toList();
     }
 }

@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class DTOContent {
-    private DTOContent(){}
+public class DTOCurso {
+    private DTOCurso(){}
 
     @Getter@Setter
     @NoArgsConstructor @AllArgsConstructor
-    public static class CadastroConteudoDTO {
+    public static class CadastroCursoDTO {
         private Long id;
         private String nome;
         private Collection<String> categorias;

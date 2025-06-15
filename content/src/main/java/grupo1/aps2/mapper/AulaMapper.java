@@ -4,13 +4,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
-import grupo1.aps2.dto.DTOLesson;
-import grupo1.aps2.model.LessonEntity;
+import grupo1.aps2.dto.DTOAula;
+import grupo1.aps2.model.AulaEntity;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA,
     unmappedSourcePolicy = ReportingPolicy.IGNORE,
     unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface LessonMapper {
-    DTOLesson.CadastroAulaDTO map(LessonEntity source);
-    LessonEntity map(DTOLesson.CadastroAulaDTO source);
+public interface AulaMapper {
+    DTOAula.CadastroAulaDTO map(AulaEntity source);
+    AulaEntity map(DTOAula.CadastroAulaDTO source);
 }
