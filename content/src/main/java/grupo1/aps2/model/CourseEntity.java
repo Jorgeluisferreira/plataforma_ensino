@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class ContentEntity {
+public class CourseEntity {
     
     @Id
     private long id;

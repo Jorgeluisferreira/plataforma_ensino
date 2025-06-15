@@ -1,22 +1,20 @@
 package grupo1.aps2.dto;
 
-import java.util.Collection;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class DTOContent {
-    private DTOContent(){}
+public class DTOLesson {
+    private DTOLesson(){}
 
     @Getter@Setter
     @NoArgsConstructor @AllArgsConstructor
-    public static class CadastroConteudoDTO {
+    public static class CadastroAulaDTO {
         private Long id;
         private String nome;
-        private Collection<String> categorias;
         private String descricao;
+        private String contentURL;
     }
 
 }
