@@ -2,13 +2,17 @@ package grupo1.aps2.controller;
 
 import java.util.List;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import grupo1.aps2.dto.DTOAula;
 import grupo1.aps2.dto.DTOCurso;
+import grupo1.aps2.dto.DTOCursoAluno;
 import grupo1.aps2.mapper.AulaMapper;
+import grupo1.aps2.mapper.CursoAlunoMapper;
 import grupo1.aps2.mapper.CursoMapper;
 import grupo1.aps2.model.AulaEntity;
+import grupo1.aps2.model.CursoAlunoEntity;
 import grupo1.aps2.model.CursoEntity;
 import grupo1.aps2.repository.ContentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,9 +36,14 @@ public class ContentController {
     CursoMapper cursoMapper;
     @Inject
     AulaMapper aulaMapper;
+    @Inject
+    CursoAlunoMapper cursoAlunoMapper;
 
     @Inject
     ContentRepository repository;
+
+    @Inject
+    JsonWebToken jwt;
 
     @POST
     @Path("/cadastrarCurso")
@@ -68,4 +77,13 @@ public class ContentController {
                          .map(aulaMapper::map)
                          .toList();
     }
-}
+
+    @POST
+    @Path("/assinarCurso/{curso_id}")
+    public Response assinarCurso (@Valid DTOCursoAluno.CursoAlunoDTO dto){
+        CursoAlunoEntity entity = cursoAlunoMapper.map(dto);
+        repository.assinaCurso(entity);
+        return Response.status(Status.CREATED).build();
+    }
+
+}   

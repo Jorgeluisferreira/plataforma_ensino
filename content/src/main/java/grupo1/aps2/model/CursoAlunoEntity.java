@@ -1,28 +1,27 @@
 package grupo1.aps2.model;
 
-import java.util.Collection;
-
+import grupo1.aps2.model.estados.EstadoCurso;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class CursoEntity {
-    
+public class CursoAlunoEntity {
+   
     @Id
-    private long id;
+    private Long id;
 
     @NotBlank
-    private String nome;
+    private Long cursoId;
+
+    @NotBlank
+    private Long usuarioId;
     
-    @Valid
-    private Collection<String> categorias;
-    
-    private String descricao;
+    @NotBlank
+    private EstadoCurso status;
 
 }
 

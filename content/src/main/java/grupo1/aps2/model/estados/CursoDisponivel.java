@@ -10,11 +10,14 @@ public class CursoDisponivel implements EstadoCurso{
     }
 
     public void enviarAtividade(){
-        
+
     }
 
     public void receberCertificado(){
 
     }
 
+    public EstadoCurso concluirEtapa(){
+        return new CursoEmAndamento();   
+    }
 }

@@ -5,4 +5,5 @@ public interface EstadoCurso {
     void cancelarMatricula();
     void enviarAtividade();
     void receberCertificado();
+    EstadoCurso concluirEtapa();
 }

@@ -17,4 +17,7 @@ public class CursoEncerrado implements EstadoCurso{
 
     }
 
+    public EstadoCurso concluirEtapa(){
+        return this;   
+    }
 }
