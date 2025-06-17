@@ -53,8 +53,9 @@ public class ContentController {
         return Response.status(Status.CREATED).build();
     }
 
-    @Path("/cadastrarAula")
-    public Response cadastrarAula(@Valid DTOAula.CadastroAulaDTO dto){
+    @POST
+    @Path("/{curso_id}/adicionarAula")
+    public Response adicionarAula(@Valid DTOAula.CadastroAulaDTO dto){
         AulaEntity conteudo = aulaMapper.map(dto);
         repository.save(conteudo);
         return Response.status(Status.CREATED).build();

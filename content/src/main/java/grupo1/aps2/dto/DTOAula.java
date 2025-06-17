@@ -12,6 +12,7 @@ public class DTOAula {
     @NoArgsConstructor @AllArgsConstructor
     public static class CadastroAulaDTO {
         private Long id;
+        private Long curso_id;
         private String nome;
         private String descricao;
         private String contentURL;

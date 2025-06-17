@@ -11,7 +11,9 @@ import lombok.Setter;
 public class AulaEntity {
     
     @Id
-    private long id;
+    private Long id;
+
+    private Long curso_id;
     
     @NotBlank
     private String nome;
