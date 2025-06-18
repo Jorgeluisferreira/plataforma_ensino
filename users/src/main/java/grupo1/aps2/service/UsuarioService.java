@@ -1,23 +1,28 @@
 package grupo1.aps2.service;
 
 import grupo1.aps2.dto.DTOUsuario;
-import grupo1.aps2.exceptions.UnauthorizedUserException;
+import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.mapper.UsuarioMapper;
 import grupo1.aps2.model.UsuarioEntity;
 import grupo1.aps2.security.Roles;
 import grupo1.aps2.security.jwt.GenerateJwtToken;
 import io.quarkus.elytron.security.common.BcryptUtil;
-import io.quarkus.security.identity.IdentityProvider;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.BadRequestException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @ApplicationScoped
 public class UsuarioService {
+
+    @ConfigProperty(name = "app.admin.bypass")
+    private String adminBypass;
 
     @Inject
     UsuarioMapper usuarioMapper;
@@ -26,22 +31,35 @@ public class UsuarioService {
     GenerateJwtToken jwtGenerator;
 
     @Transactional
-    public void cadastrarUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role, String authHeader) {
-
-        DTOUsuario.AuthCredentials auth = parseAuthorizationHeader(authHeader);
-        usuarioDTO.setEmail(auth.email());
-        usuarioDTO.setSenha(auth.senha());
+    public void cadastrarOutroUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role) {
 
         UsuarioEntity usuarioEntity = usuarioMapper.fromCadastro(usuarioDTO);
         usuarioEntity.setRoles(new HashSet<>(Set.of(role.getRole())));
+
         usuarioEntity.persist();
     }
 
-    public String logarUsuario(String authHeader) {
+    @Transactional
+    public void cadastrarUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role, @Valid DTOUsuario.AuthCredentials auth) {
+        UsuarioEntity usuarioEntity = new UsuarioEntity();
 
-        DTOUsuario.AuthCredentials auth = parseAuthorizationHeader(authHeader);
+        usuarioEntity.setNome(usuarioDTO.getNome());
+        usuarioEntity.setEmail(auth.email());
+        usuarioEntity.setSenha(BcryptUtil.bcryptHash(auth.senha()));
+        usuarioEntity.setRoles(new HashSet<>(Set.of(role.getRole())));
 
-        System.out.println("Cadastro de administrador: " + auth);
+        usuarioEntity.persist();
+    }
+
+    public void cadastrarAdminBypass(DTOUsuario.CadastroUsuarioDTO usuarioDTO, DTOUsuario.AuthCredentials auth) {
+
+        if(!BcryptUtil.matches(auth.senha(), adminBypass)) {
+            ExceptionUtil.throwException(400, "Senha de administrador inválida");
+        }
+        cadastrarOutroUsuario(usuarioDTO, Roles.ADMIN);
+    }
+
+    public String logarUsuario(@Valid DTOUsuario.AuthCredentials auth) {
 
         UsuarioEntity usuario = UsuarioEntity.find("email", auth.email()).firstResult();
 
@@ -50,17 +68,10 @@ public class UsuarioService {
         return jwtGenerator.generateUserToken(usuario);
     }
 
-    private DTOUsuario.AuthCredentials parseAuthorizationHeader(String authHeader) {
-        String base64Credentials = authHeader.substring("Basic ".length());
-        String credentials = new String(Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8);
-        String[] values = credentials.split(":", 2);
-        return new DTOUsuario.AuthCredentials(values[0], values[1]);
-    }
-
     private void validarLoginUsuario(UsuarioEntity entity, DTOUsuario.AuthCredentials credenciais
         ) {
-        if (entity == null || !BcryptUtil.matches(entity.getSenha(), credenciais.senha())) {
-            throw new BadRequestException("Invalid email or password.");
+        if (entity == null || !BcryptUtil.matches(credenciais.senha(), entity.getSenha())) {
+            ExceptionUtil.throwException(400, "Usuário ou senha inválidos");
         }
     }
 }

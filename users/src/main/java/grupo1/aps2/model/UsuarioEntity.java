@@ -6,7 +6,9 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.security.identity.request.AuthenticationRequest;
 import io.quarkus.security.jpa.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,20 +27,21 @@ public class UsuarioEntity extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "matricula_seq")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O nome não pode ser nulo ou vazio.")
     private String nome;
 
-    @NotBlank
+    @NotBlank(message = "O email não pode ser nulo ou vazio.")
+    @Email(message = "O email deve ser válido.")
     @Column(unique = true)
     @Username
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "A senha não pode ser nula ou vazia.")
     @Size(min = 6, max = 64, message = "A senha deve ter entre 6 e 64 caracteres.")
     @Password
     private String senha;
 
-    @NotBlank
+    @NotEmpty
     @Roles
     public Collection<String> roles;
 }

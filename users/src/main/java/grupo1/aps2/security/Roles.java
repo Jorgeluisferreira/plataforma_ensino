@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum Roles {
-    GUEST(0, "guest"),
-    ALUNO(1, "aluno"),
-    PROFESSOR(2, "professor"),
-    ADMIN(5, "admin");
+    GUEST(0, "Gguest"),
+    ALUNO(1, "Aluno"),
+    PROFESSOR(2, "Professor"),
+    ADMIN(5, "Admin");
 
     private final String role;
     private final Integer id;

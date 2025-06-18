@@ -1,5 +1,6 @@
 package grupo1.aps2.security.jwt;
 
+import grupo1.aps2.exceptions.ExceptionUtil;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
@@ -49,11 +50,11 @@ public class TokenSecuredResource {
     }
 
     private String getResponseString(SecurityContext ctx) {
-        String name;
+        String name = "";
         if (ctx.getUserPrincipal() == null) {
             name = "anonymous";
         } else if (!ctx.getUserPrincipal().getName().equals(jwt.getName())) {
-            throw new InternalServerErrorException("Principal and JsonWebToken names do not match");
+            ExceptionUtil.throwException(401, "Principal and JsonWebToken names do not match");
         } else {
             name = ctx.getUserPrincipal().getName();
         }
