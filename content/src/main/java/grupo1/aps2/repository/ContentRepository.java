@@ -29,6 +29,16 @@ public class ContentRepository {
         return em.createQuery("from CourseEntity", CursoEntity.class).getResultList();
     }
 
+    public CursoEntity searchCursoById(Long cursoId) {
+        List<CursoEntity> resultados = em.createQuery(
+            "FROM CursoEntity WHERE id = :cursoId", CursoEntity.class)
+            .setParameter("cursoId", cursoId)
+            .getResultList();
+
+        return resultados.isEmpty() ? null : resultados.get(0);
+    }
+
+
     public List<AulaEntity> listAllLessons() {
         return em.createQuery("from LessonEntity", AulaEntity.class).getResultList();
     }

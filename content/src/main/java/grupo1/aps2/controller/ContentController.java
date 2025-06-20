@@ -2,7 +2,6 @@ package grupo1.aps2.controller;
 
 import java.util.List;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import grupo1.aps2.dto.DTOAula;
@@ -22,6 +21,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -41,9 +41,6 @@ public class ContentController {
 
     @Inject
     ContentRepository repository;
-
-    @Inject
-    JsonWebToken jwt;
 
     @POST
     @Path("/cadastrarCurso")
@@ -68,6 +65,12 @@ public class ContentController {
                          .stream()
                          .map(cursoMapper::map)
                          .toList();
+    }
+
+    @GET
+    @Path("/lerCurso/{curso_id}")
+    public CursoEntity procuraCursoPorId(@PathParam("curso_id") Long curso_id){
+        return repository.searchCursoById(curso_id);
     }
 
     @GET
