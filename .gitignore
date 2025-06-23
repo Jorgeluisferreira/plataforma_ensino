@@ -1,1 +1,11 @@
 postgres-data/
+
+# Customized User IDEs folders
+.idea
+.vscode
+
+# Public/private keys
+*.pem
+
+# Local Database files
+*.mv.db
