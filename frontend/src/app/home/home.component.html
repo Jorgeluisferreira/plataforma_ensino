@@ -6,18 +6,17 @@
 <div class="courses">
     <h1>Cursos disponíveis</h1>
     <div class="carousel">
-        <div class="item">
-            <p>{{logged ? user.name : "teste"}}</p>
-        </div>
-        <div class="item">
-            <p>{{logged}}</p>
-        </div>
-        <div class="item">
-            <p>teste</p>
-        </div>
-        <div class="item">
-            <p>teste</p>
-        </div>
-    
+        <app-item titulo="Titulo 1" descricao="descrição do item"></app-item>
     </div>
+</div>
+
+<div class="feedbacks">
+    <h1>Cursos disponíveis</h1>
+    <div class="carousel">
+        <app-feedback usuario="Nome do user" comentario="comentario do user"></app-feedback>
+    </div>
+</div>
+
+<div class="footer">
+    
 </div>

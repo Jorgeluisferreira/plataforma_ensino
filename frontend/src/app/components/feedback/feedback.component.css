@@ -1,0 +1,24 @@
+.feedback{
+    width: 350px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img{
+    background-color: aliceblue;
+    width: 125px;
+    height: 125px;
+    margin-inline: auto;
+    border-radius: 100%;
+    border: 2px solid black;
+}
+
+.msg{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
