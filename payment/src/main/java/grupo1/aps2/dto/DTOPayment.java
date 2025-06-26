@@ -5,41 +5,49 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 public class DTOPayment {
 
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
-    public static class UserInfoDTO {
-
-    }
-
-    @Getter @Setter
-    @AllArgsConstructor @NoArgsConstructor
-    public static class PaymentInfoDTO {
+    public static class UserInfo {
+        private Long userId;
+        private String nome;
+        private String email;
     }
 
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     public static class PaymentConfirmationDTO {
-
+        private String userEmail;
+        private String paymentMethod;
+        private String status;
     }
 
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     public static class RefundConfirmationDTO {
-
+        private String userEmail;
+        private String paymentMethod;
+        private BigDecimal amount;
+        private String status;
     }
 
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     public static class PaymentRequestDTO {
-        private UserInfoDTO userInfo;
-        private PaymentInfoDTO paymentInfo;
+        private UserInfo userInfo;
+
+        private String paymentMethod;
+        private BigDecimal amount;
+        private String status;
     }
 
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     public static class RefundRequestDTO {
-
+        private Long paymentId;
+        private UserInfo userInfo;
     }
 }
