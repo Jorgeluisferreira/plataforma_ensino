@@ -1,0 +1,18 @@
+div{
+    height: 100%;
+    width: 15%;
+    border-right: 1px solid black;
+    margin: 0;
+    padding: 0;
+}
+
+ul{
+    list-style: none;
+    padding: 3px 7px;
+}
+
+li{
+    padding: 12px 7px;
+    font-size: 18px;
+    border-bottom: 1px solid #999;
+}
