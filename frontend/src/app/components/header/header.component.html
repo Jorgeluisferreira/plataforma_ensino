@@ -2,6 +2,12 @@
     <nav>
         <h3 routerLink="/">Areas academy</h3>
         <ul>
+            <li [hidden]="isAluno" routerLink="/areaUsuario">
+                Área do professor
+            </li>
+            <li [hidden]="!isAluno" routerLink="/areaUsuario">
+                Área do aluno
+            </li>
             <li routerLink="/register">
                 Entrar
             </li>

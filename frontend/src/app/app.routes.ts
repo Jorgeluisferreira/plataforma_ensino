@@ -13,5 +13,12 @@ export const routes: Routes = [{
     loadComponent: () => {
         return import('./registration/registration.component').then(m => m.RegistrationComponent)
     },
-}
+},
+{
+    path:'areaUsuario',
+    pathMatch:'full',
+    loadComponent: () => {
+        return import('./area-usuario/area-usuario.component').then(m => m.AreaUsuarioComponent)
+    },
+},
 ];

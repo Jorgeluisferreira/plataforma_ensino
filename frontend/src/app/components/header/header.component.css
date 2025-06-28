@@ -24,8 +24,9 @@ header{
 
     ul{
         list-style: none;
-
+        display: flex;
         li{
+            margin-inline: 5px;
             font-size: 18px;
             cursor: pointer;
 
