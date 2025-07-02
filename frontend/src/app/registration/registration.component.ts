@@ -17,10 +17,10 @@ export class RegistrationComponent implements OnInit {
     this.isRegistering = !this.isRegistering;
   }
 
-  name='';
+  nome='';
   email='';
-  password='';
-  birthday='';
+  senha='';
+  roles=1;
 
   users: any[] = [];
 
@@ -53,19 +53,19 @@ export class RegistrationComponent implements OnInit {
 
   cadastrar() {
     const newUser = {
-      name: this.name,
+      nome: this.nome,
       email: this.email,
-      password: this.password,
-      birthday: this.birthday
+      senha: this.senha,
+      roles: this.roles
     };
 
     this.userService.createUser(newUser).subscribe({
       next: () => {
         this.loadUsers();
-        this.name = '';
+        this.nome = '';
         this.email ='';
-        this.password ='';
-        this.birthday ='';
+        this.senha ='';
+        this.roles = 1;
       },
       error: (error) => console.error('Erro ao cadastrar:', error)
       }
@@ -73,7 +73,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   login(){
-      this.userService.login(this.email,this.password).subscribe({
+      this.userService.login(this.email,this.senha).subscribe({
         next: (response) => {
           console.log('Login bem sucedido', response);
           localStorage.setItem('user',(response.user))

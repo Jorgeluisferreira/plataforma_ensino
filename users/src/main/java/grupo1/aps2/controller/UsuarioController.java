@@ -1,32 +1,33 @@
 package grupo1.aps2.controller;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
+
+import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
+
 import grupo1.aps2.dto.DTOUsuario;
+import grupo1.aps2.dto.DTOUsuario.CadastroUsuarioDTO;
 import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.exceptions.MensagemErro;
 import grupo1.aps2.model.UsuarioEntity;
 import grupo1.aps2.security.Roles;
 import grupo1.aps2.service.UsuarioService;
-import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.logging.Log;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.resteasy.reactive.RestResponse;
-import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.List;
-
-import static grupo1.aps2.dto.DTOUsuario.CadastroUsuarioDTO;
 
 @ApplicationScoped
 @Path("users")
@@ -56,11 +57,12 @@ public class UsuarioController {
     @POST
     @Path("/cadastrarAluno")
     @PermitAll
-    public RestResponse<String> cadastrarAluno(CadastroUsuarioDTO cadastro, @HeaderParam("Authorization") String authHeader) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse<String> cadastrarAluno(CadastroUsuarioDTO cadastro) {
         if (cadastro == null || cadastro.getNome() == null || cadastro.getNome().isBlank()) {
             ExceptionUtil.throwException(400, "É necessário informar o nome do usuário.");
         }
-        usuarioService.cadastrarUsuario(cadastro, Roles.ALUNO, parseAuthorizationHeader(authHeader));
+        usuarioService.cadastrarUsuario(cadastro, Roles.ALUNO);
         return ResponseBuilder.ok("Usuario cadastrado como aluno com sucesso").build();
     }
 

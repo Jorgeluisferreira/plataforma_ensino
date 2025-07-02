@@ -1,5 +1,10 @@
 package grupo1.aps2.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import grupo1.aps2.dto.DTOUsuario;
 import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.mapper.UsuarioMapper;
@@ -7,16 +12,10 @@ import grupo1.aps2.model.UsuarioEntity;
 import grupo1.aps2.security.Roles;
 import grupo1.aps2.security.jwt.GenerateJwtToken;
 import io.quarkus.elytron.security.common.BcryptUtil;
-import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 @ApplicationScoped
 public class UsuarioService {
@@ -40,12 +39,12 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void cadastrarUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role, @Valid DTOUsuario.AuthCredentials auth) {
+    public void cadastrarUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role) {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
 
         usuarioEntity.setNome(usuarioDTO.getNome());
-        usuarioEntity.setEmail(auth.email());
-        usuarioEntity.setSenha(BcryptUtil.bcryptHash(auth.senha()));
+        usuarioEntity.setEmail(usuarioDTO.getEmail());
+        usuarioEntity.setSenha(BcryptUtil.bcryptHash(usuarioDTO.getSenha()));
         usuarioEntity.setRoles(new HashSet<>(Set.of(role.getRole())));
 
         usuarioEntity.persist();

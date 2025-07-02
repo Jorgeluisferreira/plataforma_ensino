@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RegistrationService {
 
-  private apiUrl = 'http://localhost:8002/users'; // <- sua API backend
+  private apiUrl = 'http://localhost:8080/users'; // <- API backend
 
   constructor(private http: HttpClient) {}
 
@@ -19,12 +19,17 @@ export class RegistrationService {
   // POST - cria um novo usuário
   createUser(data: any): Observable<any> {
     console.log(data)
-    return this.http.post<any>(`${this.apiUrl}`, data)
+    return this.http.post(`${this.apiUrl}/cadastrarAluno`, data, {
+    responseType: 'text' as 'json'
+    });
   }
 
   //POST - login de usuario
   login(email:string, password:string): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/login`,{email, password});
+    const headers = {
+      Authorization: 'Basic ' + btoa(`${email}:${password}`)
+    };
+    return this.http.post(`${this.apiUrl}/login`,{}, {headers, withCredentials: true, responseType: 'text'});
   }
 
   // PUT - atualiza usuário
