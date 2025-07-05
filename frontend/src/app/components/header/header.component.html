@@ -2,14 +2,17 @@
     <nav>
         <h3 routerLink="/">Areas academy</h3>
         <ul>
-            <li [hidden]="isAluno" routerLink="/areaUsuario">
+            <li *ngIf="isLogged && !isAluno" routerLink="/areaUsuario">
                 Área do professor
             </li>
-            <li [hidden]="!isAluno" routerLink="/areaUsuario">
+            <li *ngIf="isLogged && isAluno" routerLink="/areaUsuario">
                 Área do aluno
             </li>
             <li [hidden]="isLogged" routerLink="/register">
                 Entrar
+            </li>
+            <li [hidden]="!isLogged" (click)="logout()" routerLink="/register">
+                Logout <i class="bi bi-box-arrow-in-right"></i>
             </li>
         </ul>
     </nav>

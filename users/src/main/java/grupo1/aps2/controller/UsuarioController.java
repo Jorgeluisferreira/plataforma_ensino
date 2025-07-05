@@ -19,6 +19,7 @@ import grupo1.aps2.service.UsuarioService;
 import io.quarkus.logging.Log;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import io.smallrye.jwt.auth.principal.JWTParser;
+import jakarta.ws.rs.core.NewCookie;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -86,6 +87,22 @@ public class UsuarioController {
         
         return ResponseBuilder.ok(dados).build();
     }
+
+    @POST
+    @Path("/logout")
+    public RestResponse<String> logout() {
+        NewCookie cookie = new NewCookie(
+            "jwt", "", "/", null, null, 0, true, true
+        );
+
+        // Use o builder da forma correta:
+        return RestResponse.ResponseBuilder
+                .ok("Executado com sucesso")
+                .header("Set-Cookie", cookie)
+                .cookie(cookie)
+                .build();
+    }
+
 
     @POST
     @Path("/cadastrarAluno")

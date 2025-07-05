@@ -15,5 +15,15 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/UsuarioInfos`, {}, {withCredentials: true});
   }
 
+  logout(){
+    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true, responseType: 'text' })
+    .subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => console.error('Erro ao deslogar', err)
+    });
+  }
+
 
 }
