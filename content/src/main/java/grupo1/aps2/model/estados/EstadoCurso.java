@@ -6,4 +6,6 @@ public interface EstadoCurso {
     void enviarAtividade();
     void receberCertificado();
     EstadoCurso concluirEtapa();
+
+    EstadoCursoEnum toEnum();
 }

@@ -20,4 +20,9 @@ public class CursoEmAndamento implements EstadoCurso{
     public EstadoCurso concluirEtapa(){
         return new CursoEncerrado();   
     }
+
+    @Override
+    public EstadoCursoEnum toEnum() {
+        return EstadoCursoEnum.EM_ANDAMENTO;
+    }
 }

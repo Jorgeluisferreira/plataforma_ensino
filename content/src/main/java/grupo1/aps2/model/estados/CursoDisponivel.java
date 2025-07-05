@@ -20,4 +20,9 @@ public class CursoDisponivel implements EstadoCurso{
     public EstadoCurso concluirEtapa(){
         return new CursoEmAndamento();   
     }
+
+    @Override
+    public EstadoCursoEnum toEnum() {
+        return EstadoCursoEnum.DISPONIVEL;
+    }
 }
