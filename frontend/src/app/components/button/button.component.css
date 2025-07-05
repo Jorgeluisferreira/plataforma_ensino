@@ -1,9 +1,15 @@
 .btn{
     background-color: #19747E;
-    width: 100px;
+    width: 100%;
     border-radius: 5px;
     padding: 3% 2%;
-    margin: auto;
+    height: 100%;
+    text-align: center;
+
+    &:hover{
+        cursor: pointer;
+        background-color: #39c4d3;
+    }
 }
 
 .btn span{

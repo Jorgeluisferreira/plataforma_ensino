@@ -25,6 +25,7 @@ header{
     ul{
         list-style: none;
         display: flex;
+        align-items: center;
         li{
             margin-inline: 5px;
             font-size: 18px;
@@ -33,10 +34,97 @@ header{
             &:hover{
                 color: #D1E8E2;
             }
+            
+            i{
+                font-size: 24px;
+                margin-inline: 2px;
+            }
         }
     
     }
 
     }
+}
+
+.carrinho-modal {
+  position: fixed;
+  top: 0;
+  color: black;
+  right: -100%;
+  width: 350px;
+  height: 100%;
+  background: white;
+  border-left: 1px solid #ccc;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding: .5rem 1rem ;
+
+  ul{
+    margin: 0;
+    padding: 0;
+  }
+  
+}
+
+.carrinho-item{
+    list-style: none;
+    margin: 0;
+    border-bottom: 1px solid gray;
+
+    div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        div{
+            i{
+                margin-inline-start:10px;
+                font-size: 18px;
+
+                &:hover{
+                    cursor: pointer;
+                    color: red;
+                }
+            }
+        }
+    }
+}
+
+
+.carrinho-top{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-bottom: 2px solid black;
+
+    i{
+        font-size: 26px;
+        margin-right: 5px;
+    
+        &:hover{
+            color: gray;
+            cursor: pointer;
+        }
+    }
+
+    h3{
+        font-size: 22px;
+    }
+}
+
+.carrinho-bottom{
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    max-width: 340px;
+    margin: 0;
+    padding: 10px 1px;
+    align-items: center;
+    justify-content: center;
+}
+
+.carrinho-modal.aberto {
+  right: 0;
 }
 
