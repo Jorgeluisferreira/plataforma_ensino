@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class AulaEntity extends PanacheEntityBase {
     private Long id;
 
     @NotNull
+    @ManyToOne
     private CursoEntity curso;
     
     @NotBlank

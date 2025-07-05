@@ -21,12 +21,10 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
+        System.out.println(jwt.getClaimNames());
+
         if (jwt == null || !jwt.getClaimNames().iterator().hasNext()) {
-                // Token inválido ou ausente
-                requestContext.abortWith(
-                        jakarta.ws.rs.core.Response.status(jakarta.ws.rs.core.Response.Status.UNAUTHORIZED).build()
-                );
-                return;
+
         }
 
         // Exemplo: extrair claims e criar DTO

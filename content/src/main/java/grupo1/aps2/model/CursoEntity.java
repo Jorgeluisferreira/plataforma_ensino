@@ -21,7 +21,6 @@ public class CursoEntity extends PanacheEntityBase {
     @NotBlank
     private String nome;
     
-    @Valid
     @ElementCollection
     private Collection<String> categorias;
     

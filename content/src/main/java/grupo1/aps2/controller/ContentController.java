@@ -2,6 +2,7 @@ package grupo1.aps2.controller;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import grupo1.aps2.dto.DTOAula;
