@@ -1,6 +1,18 @@
 <div class="about">
-    <h1>Bem vindo à Areas Academy!</h1>
-    <p>Onde só os de verdade aprendem</p>
+    <h1 *ngIf="!usuario">Bem vindo à Areas Academy!</h1>
+    <p *ngIf="!usuario">Onde só os de verdade aprendem</p>
+    <h1 *ngIf="usuario">Bem vindo {{ usuario.nome }}</h1>
+
+<!-- <div *ngIf="usuario"> -->
+  <!-- <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+  <p><strong>Email:</strong> {{ usuario.email }}</p>
+  <p ><strong>Roles:</strong> {{ usuario.roles[0].string }}</p>
+</div> -->
+
+<div *ngIf="!usuario">
+  <p>Usuário não encontrado ou não logado.</p>
+</div>
+
 </div>
 
 <div class="courses">

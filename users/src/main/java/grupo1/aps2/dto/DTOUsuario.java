@@ -1,9 +1,6 @@
 package grupo1.aps2.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.quarkus.resteasy.reactive.jackson.CustomDeserialization;
-import io.quarkus.security.User;
-import jakarta.validation.Valid;
+import java.util.Collection;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -41,6 +38,14 @@ public class DTOUsuario {
         @Size(min = 6, max = 64, message = "A senha deve ter entre 6 e 64 caracteres.")
         @NotBlank
         private String senha;
+    }
+
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    public static class UsuarioDTO {
+        private String nome;
+        private String email;
+        private Collection<String> roles;
     }
 
     public static record AuthCredentials(

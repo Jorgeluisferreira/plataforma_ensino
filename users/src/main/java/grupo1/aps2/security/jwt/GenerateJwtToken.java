@@ -35,7 +35,9 @@ public class GenerateJwtToken {
     public String generateUserToken(UsuarioEntity usuario) {
         return Jwt.issuer(ISSUER)
                 .upn(usuario.getId().toString())
+                .claim("nome", usuario.getNome())
                 .claim("email", usuario.getEmail())
+                .claim("roles", usuario.getRoles())
                 .groups(getUserGroups(usuario))
                 .sign();
     }

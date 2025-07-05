@@ -8,7 +8,7 @@
             <li [hidden]="!isAluno" routerLink="/areaUsuario">
                 Área do aluno
             </li>
-            <li routerLink="/register">
+            <li [hidden]="isLogged" routerLink="/register">
                 Entrar
             </li>
         </ul>
