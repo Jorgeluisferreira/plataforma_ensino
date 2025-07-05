@@ -1,6 +1,9 @@
 package grupo1.aps2.dto;
 
+import grupo1.aps2.dto.DTOCurso.CadastroCursoDTO;
+import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.model.estados.EstadoCurso;
+import grupo1.aps2.model.estados.EstadoCursoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +16,8 @@ public class DTOCursoAluno {
     @NoArgsConstructor @AllArgsConstructor
     public static class CursoAlunoDTO {
         private Long id;
-        private Long usuarioId;
-        private Long cursoId;
-        private EstadoCurso status;
+        private UsuarioDTO usuario;
+        private CadastroCursoDTO curso;
+        private EstadoCursoEnum status;
     }
-
 }
