@@ -35,14 +35,16 @@ public class GenerateJwtToken {
     public String generateUserToken(UsuarioEntity usuario) {
         return Jwt.issuer(ISSUER)
                 .upn(usuario.getId().toString())
-                .claim("email", usuario.getEmail())
+                .claim("id", usuario.getId().toString())
+                .claim("nome", usuario.getNome())
+                .claim("role", usuario.getRole())
                 .groups(getUserGroups(usuario))
                 .sign();
     }
 
     private HashSet<String> getUserGroups(UsuarioEntity usuario) {
         HashSet<String> hs = new HashSet<>();
-        usuario.getRoles().forEach(role -> hs.add(Roles.contains(role)));
+        hs.add(usuario.getRole());
         return hs;
     }
 }

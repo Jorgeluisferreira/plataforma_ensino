@@ -43,5 +43,5 @@ public class UsuarioEntity extends PanacheEntityBase {
 
     @NotEmpty
     @Roles
-    public Collection<String> roles;
+    public String role;
 }

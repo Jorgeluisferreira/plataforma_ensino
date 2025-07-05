@@ -1,6 +1,7 @@
 package grupo1.aps2.controller;
 
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
+import grupo1.aps2.exceptions.ExceptionUtil;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Priorities;
@@ -21,18 +22,12 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        System.out.println(jwt.getClaimNames());
-
-        if (jwt == null || !jwt.getClaimNames().iterator().hasNext()) {
-
+        if (jwt == null || jwt.getIssuer() == null) {
+            ExceptionUtil.throwException(401, "JWT não encontrado ou inválido");
         }
-
-        // Exemplo: extrair claims e criar DTO
-        Long id = jwt.getClaim("id");
+        Long id = Long.parseLong(jwt.getClaim("id"));
         String nome = jwt.getClaim("nome");
         String role = jwt.getClaim("role");
-        // senha não deve estar no JWT por segurança
-
         UsuarioDTO usuarioDTO = new UsuarioDTO(id, nome, role);
 
         // Aqui você pode salvar o usuarioDTO em algum contexto, se necessário
