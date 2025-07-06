@@ -12,6 +12,28 @@ import { HeaderComponent } from '../components/header/header.component';
   styleUrl: './area-usuario.component.css'
 })
 export class AreaUsuarioComponent {
+  selectedSection: string = 'cursos'; // padrão inicial
+
+  selectSection(section: string): void {
+    this.selectedSection = section;
+  }
+
+  cursosDoUsuario = [
+  {
+    id: 1,
+    nome: 'Curso Angular Básico',
+    imagemUrl: 'https://www.diariodeinvestimentos.com.br/wp-content/uploads/2021/09/thiago-nigro-primo-rico.jpg',
+    progressoPercentual: 40
+  },
+  {
+    id: 2,
+    nome: 'Curso de Node.js',
+    imagemUrl: 'https://static.poder360.com.br/2024/09/pablo-marcal-retrato-848x477.jpg',
+    progressoPercentual: 75
+  }
+  ];
+
+
   usuario: any;
   cursosUsuario: any[] = [];
 

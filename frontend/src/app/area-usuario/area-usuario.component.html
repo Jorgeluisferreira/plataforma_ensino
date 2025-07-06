@@ -1,26 +1,54 @@
+<app-header />
 <div class="area-usuario-container">
   <nav class="menu-lateral">
-    <a href="#">Meus Cursos</a>
-    <a href="#">Segundo item</a>
-    <a href="#">Terceiro item</a>
-    <a href="#">Quarto item</a>
+    <a (click)="selectSection('cursos')">Meus Cursos</a>
+    <a (click)="selectSection('certificados')">Certificados</a>
+    <a (click)="selectSection('relatorios')">Relatórios</a>
+    <a (click)="selectSection('config')">Configurações</a>
   </nav>
 
+
   <main class="area-usuario-content">
-    <section class="usuario-info" style="background-color:#D1E8E2; padding:16px; border-radius:8px;">
-      <h2>Olá,</h2>
-      <p>Email:</p>
-      <p>Função:</p>
-    </section>
+  <div *ngIf="selectedSection" class="modal-like">
+    <ng-container [ngSwitch]="selectedSection">
 
-    <section class="cursos" style="background-color:#D1E8E2; padding:16px; border-radius:8px;">
-      <h3>Seus cursos</h3>
-    </section>
+      <section *ngSwitchCase="'cursos'" class="usuario-cursos">
+        <div class="curso-card" *ngFor="let curso of cursosDoUsuario">
+          <div class="imagem-curso">
+            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
+              <div class="progresso-container">
+                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
+              </div>
+          </div>
+          <h4 class="titulo">{{ curso.nome }}</h4>
+          <div class="btn">
+            <button >Assistir</button>
+          </div>
+        </div>
 
-    <section class="progresso" style="background-color:#D1E8E2; padding:16px; border-radius:8px;">
-      <h3>Progresso</h3>
-    </section>
-  </main>
+      </section>
+
+      <section *ngSwitchCase="'certificados'" class="cursos card">
+        <h3>Seus cursos</h3>
+        <p>Curso de Angular, HTML e mais.</p>
+      </section>
+
+      <section *ngSwitchCase="'relatorios'" class="progresso card">
+        <h3>Progresso</h3>
+        <p>Você concluiu 30% do curso.</p>
+      </section>
+
+      <section *ngSwitchCase="'config'" class="card">
+        <h3>Outra seção</h3>
+        <p>Conteúdo personalizado.</p>
+      </section>
+
+    </ng-container>
+  </div>
+</main>
+
 </div>
 
-<div class="footer"></div>
+<footer class="footer">
+  <p>© 2025 Areas Academy. Todos os direitos reservados.</p>
+</footer>
