@@ -26,6 +26,7 @@ export class HomeComponent {
       error: (err) => {
         if (err.status === 400 || err.status === 401) {
           console.log('Usuário não autenticado. Ignorando erro.');
+          this.authService.logout();
         } else {
           console.error('Erro ao carregar usuário:', err);
         }

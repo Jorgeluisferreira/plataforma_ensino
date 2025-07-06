@@ -28,9 +28,21 @@
 
       </section>
 
-      <section *ngSwitchCase="'certificados'" class="cursos card">
-        <h3>Seus cursos</h3>
-        <p>Curso de Angular, HTML e mais.</p>
+      <section *ngSwitchCase="'certificados'" class="certificados">
+        
+        <div class="curso-card" *ngFor="let curso of cursosConcluidos">
+          <div class="imagem-curso">
+            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
+              <div class="progresso-container">
+                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
+              </div>
+          </div>
+          <h4 class="titulo">{{ curso.nome }}</h4>
+          <div class="btn">
+            <button >Gerar certificado</button>
+          </div>
+        </div>
+
       </section>
 
       <section *ngSwitchCase="'relatorios'" class="progresso card">
@@ -38,9 +50,26 @@
         <p>Você concluiu 30% do curso.</p>
       </section>
 
-      <section *ngSwitchCase="'config'" class="card">
-        <h3>Outra seção</h3>
-        <p>Conteúdo personalizado.</p>
+      <section *ngSwitchCase="'config'" class="configuracoes">
+        <h2>Configurações da Conta</h2>
+
+        <form class="form-conta" >
+          <label>
+            Nome:
+            <input type="text" [(ngModel)]="usuario.nome" name="nome" required />
+          </label>
+
+          <label>
+            Email:
+            <input type="email" [(ngModel)]="usuario.email" name="email" required />
+          </label>
+
+          <div class="botoes-conta">
+            <button class="btn-editar" *ngIf="!modoEdicao" type="button" (click)="habilitarEdicao()">Editar</button>
+            <button class="btn-salvar" *ngIf="modoEdicao" type="submit">Salvar</button>
+            <button class="btn-excluir" *ngIf="modoEdicao" type="button" (click)="cancelarEdicao()">Cancelar</button>
+          </div>
+        </form>
       </section>
 
     </ng-container>
