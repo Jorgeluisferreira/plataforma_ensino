@@ -13,8 +13,27 @@
         </div>
     </div>
 
-    
-    <h1 *ngIf="usuario">Bem vindo {{ usuario.nome }}</h1>
+    <div *ngIf="usuario" class="about-logged">
+        <div class="about-left">
+            <h1 >Bem vindo {{ usuario.nome }}</h1>
+            <p>Pronto para retomar os estudos ?</p>
+        </div>
+
+        <div class="about-right">
+            <div class="title">
+                <h1>Continue de onde parou:</h1>
+            </div>
+            <div class="card-imagem">
+                <img src="https://www.diariodeinvestimentos.com.br/wp-content/uploads/2021/09/thiago-nigro-primo-rico.jpg" alt="Curso em andamento" />
+
+                <div class="faixa-inferior">
+                    <h3>Titulo</h3>
+                    <button routerLink='/curso' class="btn-continuar">Continuar</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 
 </div>
 

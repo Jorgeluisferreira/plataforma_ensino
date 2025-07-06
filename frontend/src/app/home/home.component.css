@@ -1,6 +1,9 @@
 .about{
     max-width: 100%;
     background-color: #1E3A8A;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 1000'%3E%3Cg %3E%3Ccircle fill='%231E3A8A' cx='50' cy='0' r='50'/%3E%3Cg fill='%231c3885' %3E%3Ccircle cx='0' cy='50' r='50'/%3E%3Ccircle cx='100' cy='50' r='50'/%3E%3C/g%3E%3Ccircle fill='%231a3780' cx='50' cy='100' r='50'/%3E%3Cg fill='%2319357b' %3E%3Ccircle cx='0' cy='150' r='50'/%3E%3Ccircle cx='100' cy='150' r='50'/%3E%3C/g%3E%3Ccircle fill='%23173376' cx='50' cy='200' r='50'/%3E%3Cg fill='%23163271' %3E%3Ccircle cx='0' cy='250' r='50'/%3E%3Ccircle cx='100' cy='250' r='50'/%3E%3C/g%3E%3Ccircle fill='%2315306c' cx='50' cy='300' r='50'/%3E%3Cg fill='%23142e67' %3E%3Ccircle cx='0' cy='350' r='50'/%3E%3Ccircle cx='100' cy='350' r='50'/%3E%3C/g%3E%3Ccircle fill='%23132c62' cx='50' cy='400' r='50'/%3E%3Cg fill='%23122b5d' %3E%3Ccircle cx='0' cy='450' r='50'/%3E%3Ccircle cx='100' cy='450' r='50'/%3E%3C/g%3E%3Ccircle fill='%23122959' cx='50' cy='500' r='50'/%3E%3Cg fill='%23122754' %3E%3Ccircle cx='0' cy='550' r='50'/%3E%3Ccircle cx='100' cy='550' r='50'/%3E%3C/g%3E%3Ccircle fill='%2311254f' cx='50' cy='600' r='50'/%3E%3Cg fill='%2311244a' %3E%3Ccircle cx='0' cy='650' r='50'/%3E%3Ccircle cx='100' cy='650' r='50'/%3E%3C/g%3E%3Ccircle fill='%23112245' cx='50' cy='700' r='50'/%3E%3Cg fill='%23102041' %3E%3Ccircle cx='0' cy='750' r='50'/%3E%3Ccircle cx='100' cy='750' r='50'/%3E%3C/g%3E%3Ccircle fill='%23101e3c' cx='50' cy='800' r='50'/%3E%3Cg fill='%23101c38' %3E%3Ccircle cx='0' cy='850' r='50'/%3E%3Ccircle cx='100' cy='850' r='50'/%3E%3C/g%3E%3Ccircle fill='%23101b33' cx='50' cy='900' r='50'/%3E%3Cg fill='%230f192e' %3E%3Ccircle cx='0' cy='950' r='50'/%3E%3Ccircle cx='100' cy='950' r='50'/%3E%3C/g%3E%3Ccircle fill='%230F172A' cx='50' cy='1000' r='50'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: contain;
     padding: 16px;
     height: 600px;
     color: white;
@@ -45,6 +48,88 @@
     }
 
 }
+
+.about-logged{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    
+    .about-left {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 32px;
+    }
+
+    .about-left h1 {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+    }
+
+    .about-left p {
+        font-size: 1.2rem;
+    }
+
+    .about-right {
+        flex: 1;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-direction: column;
+        max-width: 40%;
+        
+        .title{
+            width: 100%;
+        }
+    }
+}
+
+.card-imagem {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-imagem img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Faixa sobreposta */
+.faixa-inferior {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(31, 41, 55, 0.6); /* cinza escuro com transparência */
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Botão */
+.btn-continuar {
+  background-color: #F97316;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 30px;
+}
+
+.btn-continuar:hover {
+  background-color: #EA580C;
+}
+
 
 .courses{
     padding: 16px;
