@@ -1,4 +1,4 @@
-package grupo1.aps2.model.estados;
+package grupo1.aps2.service.estados;
 
 public class CursoEncerrado implements EstadoCurso{
     public void fazerMatricula(){
@@ -19,5 +19,10 @@ public class CursoEncerrado implements EstadoCurso{
 
     public EstadoCurso concluirEtapa(){
         return this;   
+    }
+
+    @Override
+    public EstadoCursoEnum toEnum() {
+        return EstadoCursoEnum.ENCERRADO;
     }
 }

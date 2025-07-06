@@ -1,12 +1,24 @@
 package grupo1.aps2.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import grupo1.aps2.dto.DTOCurso.CursoDTO;
+import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
+import grupo1.aps2.service.ContentService;
+import grupo1.aps2.service.estados.EstadoCursoEnum;
+import grupo1.aps2.service.relatorios.Documento;
+import grupo1.aps2.service.relatorios.EstadoCursoDocumento;
+import grupo1.aps2.service.relatorios.factory.DocumentoFactory;
+import grupo1.aps2.service.relatorios.factory.DocumentoHTMLFactory;
+import grupo1.aps2.service.relatorios.factory.DocumentoPDFFactory;
+import io.quarkus.panache.common.Parameters;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.Context;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import grupo1.aps2.dto.DTOAula;
 import grupo1.aps2.dto.DTOCurso;
-import grupo1.aps2.dto.DTOCursoAluno;
 import grupo1.aps2.mapper.AulaMapper;
 import grupo1.aps2.mapper.CursoAlunoMapper;
 import grupo1.aps2.mapper.CursoMapper;
@@ -40,14 +52,18 @@ public class ContentController {
     CursoAlunoMapper cursoAlunoMapper;
 
     @Inject
+    ContentService contentService;
+    @Inject
     ContentRepository repository;
 
     @POST
     @Path("/cadastrarCurso")
     public Response cadastrarCurso(@Valid DTOCurso.CadastroCursoDTO dto){
         CursoEntity conteudo = cursoMapper.map(dto);
-        repository.save(conteudo);
-        return Response.status(Status.CREATED).build();
+
+        conteudo = repository.save(conteudo);
+
+        return Response.status(Status.CREATED).entity(cursoMapper.map(conteudo)).build();
     }
 
     @POST
@@ -60,7 +76,7 @@ public class ContentController {
 
     @GET
     @Path("/lerCursos")
-    public List<DTOCurso.CadastroCursoDTO> listCourses() {
+    public List<CursoDTO> listCourses() {
         return repository.listAllCourses()
                          .stream()
                          .map(cursoMapper::map)
@@ -84,10 +100,40 @@ public class ContentController {
 
     @POST
     @Path("/assinarCurso/{curso_id}")
-    public Response assinarCurso (@Valid DTOCursoAluno.CursoAlunoDTO dto){
-        CursoAlunoEntity entity = cursoAlunoMapper.map(dto);
-        repository.assinaCurso(entity);
-        return Response.status(Status.CREATED).build();
+    public Response assinarCurso (@Context ContainerRequestContext requestContext, @PathParam("curso_id") Long cursoId) {
+        CursoEntity curso = repository.searchCursoById(cursoId);
+        UsuarioDTO usuario = (UsuarioDTO) requestContext.getProperty("usuario");
+
+        System.out.println("Assinando curso: " + cursoId + " para o usuário: " + usuario.getId());
+
+        CursoAlunoEntity entity = new CursoAlunoEntity();
+        entity.setCurso(curso);
+        entity.setUsuarioId(usuario.getId());
+        entity.setStatus(EstadoCursoEnum.EM_ANDAMENTO);
+
+        entity = repository.assinaCurso(entity);
+
+        return Response.status(Status.CREATED).entity(entity).build();
+    }
+
+    @GET
+    @Path("/gerarEstadoCursoHtml/{idCurso}")
+    @Produces(MediaType.TEXT_HTML)
+    public Response gerarEstadoCursoHtml(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext) {
+        return Response
+            .ok(contentService.gerarEstadoCurso(idCurso, requestContext,"html"))
+            .type(MediaType.TEXT_HTML)
+            .build();
+    }
+
+    @GET
+    @Path("/gerarEstadoCursoPdf/{idCurso}")
+    @Produces("application/pdf")
+    public Response gerarEstadoCurso(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext) {
+        return Response
+                .ok(contentService.gerarEstadoCurso(idCurso, requestContext,"pdf"))
+                .type("application/pdf")
+                .build();
     }
 
 }   

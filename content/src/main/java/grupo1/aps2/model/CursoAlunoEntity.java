@@ -1,27 +1,30 @@
 package grupo1.aps2.model;
 
-import grupo1.aps2.model.estados.EstadoCurso;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import grupo1.aps2.service.estados.EstadoCursoEnum;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class CursoAlunoEntity {
-   
+public class CursoAlunoEntity extends PanacheEntityBase {
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     private Long id;
 
-    @NotBlank
-    private Long cursoId;
+    @NotNull
+    @ManyToOne
+    private CursoEntity curso;
 
-    @NotBlank
+    @NotNull
     private Long usuarioId;
     
-    @NotBlank
-    private EstadoCurso status;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private EstadoCursoEnum status;
 
 }
 

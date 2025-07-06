@@ -1,8 +1,5 @@
 package grupo1.aps2.service;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import grupo1.aps2.dto.DTOUsuario;
@@ -37,7 +34,7 @@ public class UsuarioService {
     public void cadastrarOutroUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role) {
 
         UsuarioEntity usuarioEntity = usuarioMapper.fromCadastro(usuarioDTO);
-        usuarioEntity.setRoles(new HashSet<>(Set.of(role.getRole())));
+        usuarioEntity.setRoles(role.getRole());
 
         usuarioEntity.persist();
     }
@@ -49,7 +46,7 @@ public class UsuarioService {
         usuarioEntity.setNome(usuarioDTO.getNome());
         usuarioEntity.setEmail(usuarioDTO.getEmail());
         usuarioEntity.setSenha(BcryptUtil.bcryptHash(usuarioDTO.getSenha()));
-        usuarioEntity.setRoles(new HashSet<>(Set.of(role.getRole())));
+        usuarioEntity.setRoles(role.getRole());
 
         usuarioEntity.persist();
     }

@@ -118,7 +118,7 @@ public class UsuarioController {
 
     @POST
     @Path("/cadastrarProfessor")
-    @RolesAllowed({ "Admin" })
+    @PermitAll
     public RestResponse<String> cadastrarProfessor(@Valid CadastroUsuarioDTO cadastro) {
         usuarioService.cadastrarOutroUsuario(cadastro, Roles.PROFESSOR);
         return ResponseBuilder.ok("Usuario cadastrado como professor com sucesso").build();
@@ -126,7 +126,7 @@ public class UsuarioController {
 
     @POST
     @Path("/cadastrarAdmin")
-    @RolesAllowed({ "Admin" })
+    @PermitAll
     public RestResponse<String> cadastrarAdmin(@Valid CadastroUsuarioDTO cadastro) {
         usuarioService.cadastrarOutroUsuario(cadastro, Roles.ADMIN);
         return ResponseBuilder.ok("Usuario cadastrado como administrador com sucesso").build();
