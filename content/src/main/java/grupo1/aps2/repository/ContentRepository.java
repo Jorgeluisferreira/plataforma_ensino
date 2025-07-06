@@ -17,12 +17,15 @@ public class ContentRepository {
     EntityManager em;
 
     @Transactional
-    public <T> void save(T entity) {
+    public <T> T save(T entity) {
         em.persist(entity);
+        return entity;
     }
 
-    public void assinaCurso(CursoAlunoEntity entity){
+    @Transactional
+    public CursoAlunoEntity assinaCurso(CursoAlunoEntity entity){
         em.persist(entity);
+        return entity;
     }
 
     public List<CursoEntity> listAllCourses() {

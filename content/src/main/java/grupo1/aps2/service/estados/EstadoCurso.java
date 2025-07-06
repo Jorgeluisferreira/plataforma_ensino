@@ -1,4 +1,4 @@
-package grupo1.aps2.model.estados;
+package grupo1.aps2.service.estados;
 
 public interface EstadoCurso {
     void fazerMatricula();

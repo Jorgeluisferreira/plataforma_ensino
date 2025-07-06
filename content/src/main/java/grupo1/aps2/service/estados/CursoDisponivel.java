@@ -1,6 +1,6 @@
-package grupo1.aps2.model.estados;
+package grupo1.aps2.service.estados;
 
-public class CursoEmAndamento implements EstadoCurso{
+public class CursoDisponivel implements EstadoCurso{
     public void fazerMatricula(){
 
     }
@@ -10,7 +10,7 @@ public class CursoEmAndamento implements EstadoCurso{
     }
 
     public void enviarAtividade(){
-        
+
     }
 
     public void receberCertificado(){
@@ -18,11 +18,11 @@ public class CursoEmAndamento implements EstadoCurso{
     }
 
     public EstadoCurso concluirEtapa(){
-        return new CursoEncerrado();   
+        return new CursoEmAndamento();   
     }
 
     @Override
     public EstadoCursoEnum toEnum() {
-        return EstadoCursoEnum.EM_ANDAMENTO;
+        return EstadoCursoEnum.DISPONIVEL;
     }
 }

@@ -11,6 +11,6 @@ import grupo1.aps2.model.CursoEntity;
     unmappedSourcePolicy = ReportingPolicy.IGNORE,
     unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CursoMapper {
-    DTOCurso.CadastroCursoDTO map(CursoEntity source);
+    DTOCurso.CursoDTO map(CursoEntity source);
     CursoEntity map(DTOCurso.CadastroCursoDTO source);
 }
