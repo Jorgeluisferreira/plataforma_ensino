@@ -12,4 +12,5 @@ export class ItemComponent {
   @Input() descricao = '';
   @Input() link = '';
   @Input() botao ='';
+  @Input() tipo='';
 }
