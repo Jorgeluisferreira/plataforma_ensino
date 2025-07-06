@@ -28,4 +28,11 @@ export const routes: Routes = [{
         return import('./payment/payment.component').then(m => m.PaymentComponent)
     },
 },
+{
+    path:'curso',
+    pathMatch:'full',
+    loadComponent: () => {
+        return import('./curso/curso.component').then(m => m.CursoComponent)
+    },
+},
 ];
