@@ -11,10 +11,10 @@
             <li *ngIf="isLogged && isAluno" (click)="abrirCarrinho()">
                 <i class="bi bi-cart2"></i>
             </li>
-            <li [hidden]="isLogged" routerLink="/register">
+            <li *ngIf="!isLogged" routerLink="/register">
                 Entrar
             </li>
-            <li [hidden]="!isLogged" (click)="logout()" routerLink="/register">
+            <li *ngIf="isLogged" (click)="logout()" routerLink="/register">
                 Logout <i class="bi bi-box-arrow-in-right"></i>
             </li>
         </ul>
