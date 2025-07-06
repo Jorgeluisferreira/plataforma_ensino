@@ -13,6 +13,7 @@ import { ButtonComponent } from '../button/button.component';
 export class HeaderComponent {
   isAluno = true
   isLogged = false
+  usuario: any = null;
 
   constructor(private authService: AuthService) {}
 
@@ -38,13 +39,12 @@ export class HeaderComponent {
   const fake = [{ nome: 'Curso Teste', preco: 29.99 },{nome: 'Curso 2', preco: 19.99}];
   localStorage.setItem('carrinho', JSON.stringify(fake));
   const dados = localStorage.getItem('usuario');
-  if(dados){
-    const usuario = JSON.parse(dados);
-    if(usuario){
+  this.authService.currentUser$.subscribe(user => {
+      this.usuario = user;
       this.isLogged = true
-    }
+    });
   }
-  }
+
 
   logout(){
     console.log("clicou")

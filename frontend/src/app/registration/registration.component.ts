@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistrationService } from '../services/registration.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
 
   users: any[] = [];
 
-  constructor(private userService: RegistrationService,
+  constructor(private authServise: AuthService,
     private router : Router
   ) {}
 
@@ -33,7 +33,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   loadUsers(){
-    this.userService.getUsers().subscribe({
+    this.authServise.getUsers().subscribe({
       next: (data) => {
         this.users = data;
       },
@@ -59,7 +59,7 @@ export class RegistrationComponent implements OnInit {
       roles: this.roles
     };
 
-    this.userService.createUser(newUser).subscribe({
+    this.authServise.createUser(newUser).subscribe({
       next: () => {
         this.loadUsers();
         this.nome = '';
@@ -73,7 +73,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   login(){
-      this.userService.login(this.email,this.senha).subscribe({
+      this.authServise.login(this.email,this.senha).subscribe({
         next: (response) => {
           console.log('Login bem sucedido', response);
           localStorage.setItem('user',(response.user))
@@ -87,7 +87,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   deleteUser(){
-    this.userService.deleteUser(5).subscribe({
+    this.authServise.deleteUser(5).subscribe({
       next: () => this.loadUsers(),
       error: (error) => console.log(error)
     })
