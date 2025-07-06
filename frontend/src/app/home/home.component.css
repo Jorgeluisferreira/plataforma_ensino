@@ -158,11 +158,16 @@
     flex-direction: column;
 }
 
-.footer{
-    height: 300px;
-    width: 100%;
-    background-color: #222;
+.footer {
+  background-color: #0F172A; /* tom bem escuro azul/acinzentado */
+  color: #E5E7EB;            /* cinza claro para contraste */
+  text-align: center;
+  padding: 16px 0;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
 }
+
 
 /* :root {
   --cor-primaria: #1E3A8A;
