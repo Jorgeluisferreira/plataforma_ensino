@@ -5,7 +5,5 @@ postgres-data/
 .vscode
 
 # Public/private keys
-*.pem
 
 # Local Database files
-*.mv.db
