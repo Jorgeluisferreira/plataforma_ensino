@@ -1,0 +1,48 @@
+/* Ajustes para o menu lateral */
+.menu-lateral {
+  width: 200px;           /* largura fixa */
+  background-color: #D1E8E2;  /* mesmo tom da sua home */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;              /* espaço entre itens */
+  border-right: 1px solid #ccc; /* linha separadora */
+  min-height: calc(100vh - 60px); /* altura total da tela menos o header */
+  box-sizing: border-box;
+}
+
+.menu-lateral a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.menu-lateral a:hover {
+  color: #0a9396;  /* um tom mais escuro de verde água */
+}
+
+/* Container principal para o conteúdo ao lado do menu */
+.area-usuario-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9; /* leve fundo claro */
+  min-height: calc(100vh - 60px);
+}
+
+/* Conteúdo principal */
+.area-usuario-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ajuste para o footer */
+.footer {
+  height: 100px; /* diminuiu de 300px para 100px */
+  width: 100%;
+  background-color: #222;
+}
