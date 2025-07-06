@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemComponent } from '../components/item/item.component';
-import { FeedbackComponent } from '../components/feedback/feedback.component';
 import { AuthService } from '../services/auth.service';
 import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, ItemComponent, FeedbackComponent, HeaderComponent],
+  imports: [CommonModule, ItemComponent, HeaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

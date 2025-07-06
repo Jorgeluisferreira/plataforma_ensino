@@ -8,5 +8,5 @@ import { MenuLateralComponent } from '../components/menu-lateral/menu-lateral.co
   styleUrl: './area-usuario.component.css'
 })
 export class AreaUsuarioComponent {
-
+  
 }
