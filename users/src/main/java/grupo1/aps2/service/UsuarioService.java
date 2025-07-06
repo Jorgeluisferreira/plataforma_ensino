@@ -9,10 +9,13 @@ import grupo1.aps2.model.UsuarioEntity;
 import grupo1.aps2.security.Roles;
 import grupo1.aps2.security.jwt.GenerateJwtToken;
 import io.quarkus.elytron.security.common.BcryptUtil;
+import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
+import io.smallrye.jwt.auth.principal.JWTParser;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+
 
 @ApplicationScoped
 public class UsuarioService {
@@ -25,6 +28,7 @@ public class UsuarioService {
 
     @Inject
     GenerateJwtToken jwtGenerator;
+
 
     @Transactional
     public void cadastrarOutroUsuario(DTOUsuario.CadastroUsuarioDTO usuarioDTO, Roles role) {

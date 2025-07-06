@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent implements OnInit {
-  isRegistering = true;
+  isRegistering = false;
 
   toggleForm(){
     this.isRegistering = !this.isRegistering;

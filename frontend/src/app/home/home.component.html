@@ -1,19 +1,33 @@
+<app-header />
+
 <div class="about">
-    <h1>Bem vindo à Areas Academy!</h1>
-    <p>Onde só os de verdade aprendem</p>
+    <h1 *ngIf="!usuario">Bem vindo à Areas Academy!</h1>
+    <p *ngIf="!usuario">Onde só os de verdade aprendem</p>
+    <h1 *ngIf="usuario">Bem vindo {{ usuario.nome }}</h1>
+
+<!-- <div *ngIf="usuario"> -->
+  <!-- <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+  <p><strong>Email:</strong> {{ usuario.email }}</p>
+  <p ><strong>Roles:</strong> {{ usuario.roles[0].string }}</p>
+</div> -->
+
+<div *ngIf="!usuario">
+  <p>Usuário não encontrado ou não logado.</p>
+</div>
+
 </div>
 
 <div class="courses">
     <h1>Cursos disponíveis</h1>
     <div class="carousel">
-        <app-item titulo="Titulo 1" descricao="descrição do item"></app-item>
+        <app-item titulo="Titulo 1" descricao="descrição do item" botao='Adcionar ao carrinho'></app-item>
     </div>
 </div>
 
 <div class="feedbacks">
-    <h1>Cursos disponíveis</h1>
+    <h1>Continue de onde parou</h1>
     <div class="carousel">
-        <app-feedback usuario="Nome do user" comentario="comentario do user"></app-feedback>
+        <app-item titulo="Continue" descricao="descricao do item" botao='Continuar' link='/curso'></app-item>
     </div>
 </div>
 

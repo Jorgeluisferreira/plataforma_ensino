@@ -2,15 +2,47 @@
     <nav>
         <h3 routerLink="/">Areas academy</h3>
         <ul>
-            <li [hidden]="isAluno" routerLink="/areaUsuario">
+            <li *ngIf="isLogged && !isAluno" routerLink="/areaUsuario">
                 Área do professor
             </li>
-            <li [hidden]="!isAluno" routerLink="/areaUsuario">
+            <li *ngIf="isLogged && isAluno" routerLink="/areaUsuario">
                 Área do aluno
             </li>
-            <li routerLink="/register">
+            <li *ngIf="isLogged && isAluno" (click)="abrirCarrinho()">
+                <i class="bi bi-cart2"></i>
+            </li>
+            <li *ngIf="!isLogged" routerLink="/register">
                 Entrar
+            </li>
+            <li *ngIf="isLogged" (click)="logout()" routerLink="/register">
+                Logout <i class="bi bi-box-arrow-in-right"></i>
             </li>
         </ul>
     </nav>
+
+    <!-- Modal lateral -->
+    <div class="carrinho-modal" [class.aberto]="carrinhoAberto">
+        <div class="carrinho-top">
+            <i (click)="fecharCarrinho()" class="bi bi-x-lg"></i>    
+            <h3>Itens no Carrinho</h3>
+        </div>
+    
+    <ul *ngIf="itensCarrinho.length > 0">
+        <li class="carrinho-item" *ngFor="let item of itensCarrinho; let i = index">
+            <div>
+                <h3>{{item.nome}}</h3>
+                <div>
+                    <h4>{{item.preco}}</h4>
+                    <i (click)="removerItem(i)" class="bi bi-trash"></i>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <p *ngIf="itensCarrinho.length === 0">Carrinho vazio</p>
+    
+    <div class="carrinho-bottom">
+        <app-button texto="Finalizar Compra" caminho="/pagamento"></app-button>
+    </div>
+    </div>
+   
 </header>

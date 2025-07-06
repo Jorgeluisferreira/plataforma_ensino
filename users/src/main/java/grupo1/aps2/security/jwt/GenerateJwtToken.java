@@ -15,26 +15,13 @@ public class GenerateJwtToken {
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     private String ISSUER;
 
-    /**
-     * Generates and prints a JWT token.
-     */
-//    public static void main(String[] args) {
-//        String token = Jwt.issuer(ISSUER)
-//                .upn("jdoe@quarkus.io")
-//                .groups(new HashSet<>(Arrays.asList("User", "Admin")))
-//                .claim(Claims.birthdate.name(), "2001-07-13")
-//                .sign();
-//
-//        System.out.println(token);
-//        System.exit(0);
-//    }
-
     public String generateUserToken(UsuarioEntity usuario) {
         return Jwt.issuer(ISSUER)
                 .upn(usuario.getId().toString())
                 .claim("id", usuario.getId().toString())
                 .claim("nome", usuario.getNome())
                 .claim("roles", usuario.getRoles())
+                .claim("email", usuario.getEmail())
                 .groups(getUserGroups(usuario))
                 .sign();
     }

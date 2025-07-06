@@ -10,4 +10,6 @@ import { ButtonComponent } from '../button/button.component';
 export class ItemComponent {
   @Input() titulo = '';
   @Input() descricao = '';
+  @Input() link = '';
+  @Input() botao ='';
 }

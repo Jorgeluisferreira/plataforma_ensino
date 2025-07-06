@@ -21,4 +21,18 @@ export const routes: Routes = [{
         return import('./area-usuario/area-usuario.component').then(m => m.AreaUsuarioComponent)
     },
 },
+{
+    path:'pagamento',
+    pathMatch:'full',
+    loadComponent: () => {
+        return import('./payment/payment.component').then(m => m.PaymentComponent)
+    },
+},
+{
+    path:'curso',
+    pathMatch:'full',
+    loadComponent: () => {
+        return import('./curso/curso.component').then(m => m.CursoComponent)
+    },
+},
 ];

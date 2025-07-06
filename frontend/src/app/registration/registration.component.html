@@ -9,7 +9,9 @@
         
         <label [hidden]="!isRegistering" >Nome completo</label>
         <input [(ngModel)]="nome" name="nome" [hidden]="!isRegistering"type="text"/>
-        <a class="button" (click)="sendData()" type="submit">{{isRegistering ? 'Cadastrar' : 'Entrar'}}</a>
+        <div class="btn">
+            <a class="button" (click)="sendData()" type="submit">{{isRegistering ? 'Cadastrar' : 'Entrar'}}</a>
+        </div>
         <a (click)="toggleForm()">{{ isRegistering ? 'já possui conta ? Fazer login' : 'Não possui conta ? Cadastre-se'}}</a>
     </form>
 
