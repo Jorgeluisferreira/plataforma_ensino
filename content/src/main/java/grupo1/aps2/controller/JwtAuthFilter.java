@@ -27,7 +27,7 @@ public class JwtAuthFilter implements ContainerRequestFilter {
         }
         Long id = Long.parseLong(jwt.getClaim("id"));
         String nome = jwt.getClaim("nome");
-        String role = jwt.getClaim("role");
+        String role = jwt.getClaim("roless");
         UsuarioDTO usuarioDTO = new UsuarioDTO(id, nome, role);
 
         // Aqui você pode salvar o usuarioDTO em algum contexto, se necessário

@@ -1,9 +1,6 @@
 package grupo1.aps2.model;
 
-import io.quarkus.elytron.security.common.BcryptUtil;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.security.identity.request.AuthenticationRequest;
 import io.quarkus.security.jpa.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -12,10 +9,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.wildfly.security.password.interfaces.BCryptPassword;
-
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @UserDefinition
@@ -43,5 +36,5 @@ public class UsuarioEntity extends PanacheEntityBase {
 
     @NotEmpty
     @Roles
-    public String role;
+    public String roles;
 }

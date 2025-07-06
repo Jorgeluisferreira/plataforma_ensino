@@ -1,13 +1,10 @@
 package grupo1.aps2.security.jwt;
 
 import grupo1.aps2.model.UsuarioEntity;
-import grupo1.aps2.security.Roles;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.jwt.Claims;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -37,14 +34,14 @@ public class GenerateJwtToken {
                 .upn(usuario.getId().toString())
                 .claim("id", usuario.getId().toString())
                 .claim("nome", usuario.getNome())
-                .claim("role", usuario.getRole())
+                .claim("roles", usuario.getRoles())
                 .groups(getUserGroups(usuario))
                 .sign();
     }
 
     private HashSet<String> getUserGroups(UsuarioEntity usuario) {
         HashSet<String> hs = new HashSet<>();
-        hs.add(usuario.getRole());
+        hs.add(usuario.getRoles());
         return hs;
     }
 }
