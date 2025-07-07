@@ -34,14 +34,24 @@ public class DTOPayment {
         private String status;
     }
 
+//    @Getter @Setter
+//    @AllArgsConstructor @NoArgsConstructor
+//    public static class PaymentRequestDTO {
+//        private UserInfo userInfo;
+//
+//        private String paymentMethod;
+//        private BigDecimal amount;
+//        private String status;
+//    }
+
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     public static class PaymentRequestDTO {
-        private UserInfo userInfo;
-
+        private Long userId;
+        private String userName;
+        private String userEmail;
         private String paymentMethod;
         private BigDecimal amount;
-        private String status;
     }
 
     @Getter @Setter
