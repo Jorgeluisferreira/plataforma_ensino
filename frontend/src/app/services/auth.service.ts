@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/users'; // <- API backend
+  private apiUrl = 'http://localhost:8082/users'; // <- API backend
 
   private currentUserSubject = new BehaviorSubject<any>(this.getUserFromStorage());
 

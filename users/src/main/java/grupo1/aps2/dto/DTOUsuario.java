@@ -1,6 +1,5 @@
 package grupo1.aps2.dto;
 
-import java.util.Collection;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -45,7 +44,7 @@ public class DTOUsuario {
     public static class UsuarioDTO {
         private String nome;
         private String email;
-        private Collection<String> roles;
+        private String roles;
     }
 
     public static record AuthCredentials(
