@@ -3,8 +3,8 @@ package grupo1.aps2.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +13,12 @@ import lombok.Setter;
 @Getter @Setter
 public class AulaEntity extends PanacheEntityBase {
     
+    @GeneratedValue
     @Id
     private Long id;
 
     @NotNull
-    @ManyToOne
-    private CursoEntity curso;
+    private Long curso_id;
     
     @NotBlank
     private String nome;

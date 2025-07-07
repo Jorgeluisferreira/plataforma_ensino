@@ -43,7 +43,7 @@ public class ContentRepository {
 
 
     public List<AulaEntity> listAllLessons() {
-        return em.createQuery("from LessonEntity", AulaEntity.class).getResultList();
+        return em.createQuery("from AulaEntity", AulaEntity.class).getResultList();
     }
 
 

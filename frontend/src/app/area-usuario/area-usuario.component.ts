@@ -81,8 +81,9 @@ export class AreaUsuarioComponent {
 
   adicionarAula() {
     const aula = new FormGroup({
-      titulo: new FormControl('', Validators.required),
-      duracao: new FormControl('', Validators.required)
+      nome: new FormControl('', Validators.required),
+      descricao: new FormControl('', Validators.required),
+      contentURL: new FormControl('', Validators.required)
     });
 
     this.aulas.push(aula);
@@ -93,23 +94,51 @@ export class AreaUsuarioComponent {
   }
 
   cadastrarCurso() {
-    if (this.cursoForm.valid) {
-      const dados = this.cursoForm.value;
-      const dadosParaEnviar = { ...this.cursoForm.value };
-      delete dadosParaEnviar.aulas;
-      console.log('Enviando curso:', dadosParaEnviar);
+  if (this.cursoForm.valid) {
+    const dados = this.cursoForm.value;
+    const aulas = this.cursoForm.get('aulas')?.value || [];
 
-      this.cursoService.cadastrarCurso(dadosParaEnviar).subscribe({
-        next: (res) => {
-          console.log('Curso cadastrado com sucesso:', res);
-        },
-        error: (err) => {
-          console.error('Erro ao cadastrar curso:', err);
-        }
-      });
+    const curso = { ...this.cursoForm.value };
+    delete curso.aulas;
+
+    console.log('Enviando curso:', curso);
+
+    this.cursoService.cadastrarCurso(curso).subscribe({
+      next: (res) => {
+        const parsed = typeof res === 'string' ? JSON.parse(res) : res;
+        console.log('Curso cadastrado com sucesso:', parsed);
+        const idCurso = parsed.id;
+
+        const aulasComId = aulas.map((aula: any) => ({
+          curso_id: idCurso,
+          ...aula
+        }));''
+
+
+        aulasComId.forEach((aula: any) => {
+          console.log(aula)
+          this.cadastrarAula(aula, idCurso);
+        });
+      },
+      error: (err) => {
+        console.error('Erro ao cadastrar curso:', err);
+      }
+    });
   } else {
     console.warn("Formulário inválido");
   }
+}
+
+
+  cadastrarAula(aula: any, id: any){
+    this.cursoService.cadastrarAula(aula,id).subscribe({
+      next: (res) => {
+        console.log('aula Cadastrada com sucesso:', res);
+      },
+      error: (err) => {
+        console.error('Erro ao cadastrar aula:', err);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -120,6 +149,13 @@ export class AreaUsuarioComponent {
         this.cursosTeste = res
       }
     })
+    this.cursoService.getAulas().subscribe({
+      next: (res) => {
+        console.log('aulas', res );
+      }
+    })
+
+
      this.authService.getUser().subscribe({
       next: (res) => {
         console.log('Usuário logado:', res);

@@ -134,15 +134,15 @@
             <div *ngFor="let aula of aulas.controls; let i = index" [formGroupName]="i" class="aula-item">
               <label>
                 Título da aula:
-                <input type="text" formControlName="titulo" />
+                <input type="text" formControlName="nome" />
               </label>
               <label>
                 Descrição:
-                <input type="text" formControlName="duracao" />
+                <input type="text" formControlName="descricao" />
               </label>
               <label>
                 Link do video:
-                <input type="text" formControlName="duracao" />
+                <input type="text" formControlName="contentURL" />
               </label>
               <button type="button" (click)="removerAula(i)">Remover</button>
             </div>
