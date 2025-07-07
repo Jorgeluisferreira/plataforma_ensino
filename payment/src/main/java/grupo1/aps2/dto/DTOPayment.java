@@ -56,6 +56,16 @@ public class DTOPayment {
 
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
+    public static class PaymentResponseDTO {
+        private String message;
+        private String paymentMethod;
+        private String userEmail;
+        private BigDecimal amount;
+        private String status;
+    }
+
+    @Getter @Setter
+    @AllArgsConstructor @NoArgsConstructor
     public static class RefundRequestDTO {
         private Long paymentId;
         private UserInfo userInfo;

@@ -6,6 +6,6 @@ public class DebitCardPayment implements PaymentStrategy {
 
     @Override
     public String processPayment(PaymentRequestDTO paymentRequestDTO) {
-        return "Debit card payment processed for " + paymentRequestDTO.getUserName();
+        return "success";
     }
 }

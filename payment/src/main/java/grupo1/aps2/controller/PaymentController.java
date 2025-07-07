@@ -9,6 +9,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
 import org.jboss.resteasy.reactive.RestResponse;
 import grupo1.aps2.strategy.*;
 import jakarta.ws.rs.core.Response;
@@ -17,69 +18,46 @@ import jakarta.ws.rs.core.Response;
 @Path("payment")
 public class PaymentController {
 
-//    @Inject
-//    PaymentService paymentService;
-//
-//    @Inject
-//    PaymentMapper paymentMapper;
-//
-//    @POST
-//    @Path("/pay")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public RestResponse<PaymentConfirmationDTO> processPayment(
-//            PaymentRequestDTO request,
-//            @HeaderParam("Authorization") String authorizationHeader) {
-//
-//        request.setUserInfo(paymentMapper.fromJwt(validateUserInfo(authorizationHeader)));
-//
-//        return RestResponse.ResponseBuilder.ok(paymentService.processPayment(request), MediaType.APPLICATION_JSON).build();
-//    }
-//
-//    @POST
-//    @Path("/refund")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public RestResponse<RefundConfirmationDTO> refundPayment(
-//            RefundRequestDTO request,
-//            @HeaderParam("Authorization") String authorizationHeader) {
-//
-//        return RestResponse.ResponseBuilder.ok(paymentService.refundPayment(request), MediaType.APPLICATION_JSON).build();
-//    }
-//
-//    private String validateUserInfo(String jwt) {
-//        String token = null;
-//        if (jwt != null && jwt.startsWith("Bearer ")) {
-//            token = jwt.substring(7);
-//        } else {
-//            throw new IllegalArgumentException("Autenticação inválida: JWT não fornecido ou inválido.");
-//        }
-//
-//        return token;
-//    }
-
     @POST
     @Path("/pay")
-    public Response processPayment(PaymentRequestDTO request) {
-        PaymentStrategy strategy;
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response processPayment(PaymentRequestDTO paymentRequestDTO) {
+        String paymentMethod = paymentRequestDTO.getPaymentMethod();
 
-        switch (request.getPaymentMethod().toLowerCase()) {
-            case "debit":
-                strategy = new DebitCardPayment();
-                break;
+        PaymentStrategy strategy;
+        switch (paymentMethod.toLowerCase()) {
             case "credit":
                 strategy = new CreditCardPayment();
+                break;
+            case "debit":
+                strategy = new DebitCardPayment();
                 break;
             case "pix":
                 strategy = new PixPayment();
                 break;
             default:
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Invalid payment method: " + request.getPaymentMethod())
+                        .entity("Invalid payment method")
                         .build();
         }
 
-        // Processa o pagamento
-        String result = strategy.processPayment(request);
+        String result = strategy.processPayment(paymentRequestDTO);
 
-        return Response.ok(result).build();
+        PaymentResponseDTO responseDTO = new PaymentResponseDTO(
+                "Payment processed successfully",
+                paymentRequestDTO.getPaymentMethod(),
+                paymentRequestDTO.getUserEmail(),
+                paymentRequestDTO.getAmount(),
+                result
+        );
+        responseDTO.setMessage("Payment processed successfully");
+        responseDTO.setPaymentMethod(paymentRequestDTO.getPaymentMethod());
+        responseDTO.setUserEmail(paymentRequestDTO.getUserEmail());
+        responseDTO.setAmount(paymentRequestDTO.getAmount());
+        responseDTO.setStatus(result);
+
+        return Response.ok(responseDTO).build();
     }
+
 }
