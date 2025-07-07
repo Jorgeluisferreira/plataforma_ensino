@@ -1,55 +1,31 @@
 package grupo1.aps2.service.relatorios.factory;
 
-import grupo1.aps2.service.relatorios.Documento;
+import grupo1.aps2.service.relatorios.DocumentoTemplate;
+import grupo1.aps2.service.relatorios.template.Body;
+import grupo1.aps2.service.relatorios.template.BodyItem;
+import grupo1.aps2.service.relatorios.template.Footer;
+import grupo1.aps2.service.relatorios.template.Header;
 import jakarta.ws.rs.WebApplicationException;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 
 public class DocumentoHTMLFactory implements DocumentoFactory {
 
+    private final StringBuilder html = new StringBuilder();
+
     @Override
-    public ByteArrayOutputStream create(Documento doc) throws WebApplicationException {
+    public ByteArrayOutputStream create(DocumentoTemplate doc) throws WebApplicationException {
         if (doc == null) {
-            throw new WebApplicationException("Documento não pode ser nulo", 400);
+            throw new WebApplicationException("DocumentoTemplate não pode ser nulo", 400);
         }
         if (!doc.isValid()) {
-            throw new WebApplicationException("Documento inválido", 400);
+            throw new WebApplicationException("DocumentoTemplate inválido", 400);
         }
 
-        StringBuilder html = new StringBuilder();
-        html.append("<!DOCTYPE html>");
-        html.append("<html><head>")
-                .append("<meta charset=\"UTF-8\"/>")
-                .append("<title>").append(doc.getTitulo()).append("</title>")
-                .append("<style>body { font-family: Arial, sans-serif; }</style>")
-                .append("</head><body>");
+        String htmlString = generateHtml(doc);
 
-        html.append("<h1>").append(doc.getTitulo()).append("</h1>");
-
-        if (doc.getUsuario() != null) {
-            html.append("<h2>Usuário</h2>")
-                    .append("<p>Nome: ").append(doc.getUsuario().getNome()).append("</p>")
-                    .append("<p>Função: ").append(doc.getUsuario().getRole()).append("</p>");
-        }
-
-        if (doc.getCursos() != null && !doc.getCursos().isEmpty()) {
-            html.append("<h2>"+doc.getTituloSessaoCursos()+"</h2><ul>");
-            doc.getCursos().forEach(curso -> {
-                html.append("<li>")
-                        .append(curso.getCurso().getNome())
-                        .append(" - ")
-                        .append(curso.getCurso().getDescricao())
-                        .append(" - ")
-                        .append(curso.getStatus())
-                        .append("</li>");
-            });
-            html.append("</ul>");
-        }
-
-        html.append("</body></html>");
-
-        String htmlString = html.toString();
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             baos.write(htmlString.getBytes(StandardCharsets.UTF_8));
             baos.flush();
@@ -57,5 +33,68 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
         } catch (Exception e) {
             throw new WebApplicationException("Erro ao gerar HTML: " + e.getMessage(), 500);
         }
+    }
+
+    public String generateHtml(DocumentoTemplate doc) throws WebApplicationException {
+
+        html.append("<!DOCTYPE html>");
+        html.append("<html lang=\"pt-BR\">");
+
+        html.append(genHeader(doc));
+        html.append(genBody(doc));
+        html.append(genFooter(doc));
+        html.append("</html>");
+
+        return html.toString();
+    }
+
+    private String genHeader(DocumentoTemplate doc) {
+        Header header = doc.getHeader();
+        String titulo = header != null && header.getTitulo() != null ? header.getTitulo() : "";
+        String dataHora = header != null && header.getDataHora() != null
+                ? header.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                : "";
+
+        return "<meta charset=\"UTF-8\"/>"
+                + "<title>" + titulo + "</title>"
+                + "<style>body { font-family: Arial, sans-serif; }</style>"
+                + "<div style='font-size:small;color:gray;'>Gerado em: " + dataHora + "</div>";
+
+    }
+
+    private String genTitle(DocumentoTemplate doc) {
+        String title = doc.getTitle().getTitulo() != null ? doc.getTitle().getTitulo() : "";
+        return "<h1>" + title + "</h1>";
+    }
+
+    private String genBody(DocumentoTemplate doc) {
+        StringBuilder body = new StringBuilder();
+
+        if (doc.getUsuario() != null) {
+            body.append("<h2>Usuário</h2>")
+                .append("<p>Nome: ").append(doc.getUsuario().getNome()).append("</p>")
+                .append("<p>Função: ").append(doc.getUsuario().getRole()).append("</p>");
+        }
+
+        Body itemBody = doc.getBody();
+        if (itemBody != null) {
+            for (BodyItem item : itemBody.getConteudo()) {
+                body.append("<div><strong>")
+                        .append(item.getNome())
+                        .append("</strong>: ")
+                        .append(item.getDescricao())
+                        .append(" <em>(")
+                        .append(item.getEstadoItem())
+                        .append(")</em></div>");
+            }
+        }
+        return body.toString();
+    }
+
+    private String genFooter(DocumentoTemplate doc) {
+        Footer footer = doc.getFooter();
+        return "<footer style='margin-top:2em;font-size:small;color:gray;'>"
+                + (footer != null && footer.getRodape() != null ? footer.getRodape() : "")
+                + "</footer>";
     }
 }

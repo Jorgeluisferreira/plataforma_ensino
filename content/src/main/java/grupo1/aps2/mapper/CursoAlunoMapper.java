@@ -1,5 +1,7 @@
 package grupo1.aps2.mapper;
 
+import grupo1.aps2.dto.DTOCursoAluno;
+import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoBodyItem;
 import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoDTO;
 import grupo1.aps2.dto.DTOUsuario;
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
@@ -30,6 +32,20 @@ public abstract class CursoAlunoMapper {
         }
 
         CursoAlunoDTO dto = new CursoAlunoDTO();
+        dto.setId(source.getId());
+        dto.setCurso(cursoMapper.map(source.getCurso()));
+        dto.setUsuario(usuario);
+        dto.setStatus(source.getStatus());
+
+        return dto;
+    }
+
+    public CursoAlunoBodyItem toBodyItem(CursoAlunoEntity source, UsuarioDTO usuario) {
+        if (source == null) {
+            return null;
+        }
+
+        CursoAlunoBodyItem dto = new CursoAlunoBodyItem();
         dto.setId(source.getId());
         dto.setCurso(cursoMapper.map(source.getCurso()));
         dto.setUsuario(usuario);

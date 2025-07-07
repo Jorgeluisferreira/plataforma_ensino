@@ -1,11 +1,12 @@
 package grupo1.aps2.service;
 
 import grupo1.aps2.dto.DTOUsuario;
+import grupo1.aps2.mapper.CursoAlunoMapper;
 import grupo1.aps2.model.CursoAlunoEntity;
 import grupo1.aps2.model.CursoEntity;
 import grupo1.aps2.repository.ContentRepository;
-import grupo1.aps2.service.relatorios.Documento;
-import grupo1.aps2.service.relatorios.EstadoCursoDocumento;
+import grupo1.aps2.service.relatorios.DocumentoTemplate;
+import grupo1.aps2.service.relatorios.EstadoCursoDocumentoTemplate;
 import grupo1.aps2.service.relatorios.factory.DocumentoFactory;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -13,12 +14,16 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 @ApplicationScoped
 public class ContentService {
 
     @Inject
     ContentRepository repository;
+
+    @Inject
+    CursoAlunoMapper cursoAlunoMapper;
 
     public ByteArrayOutputStream gerarEstadoCurso(Long idCurso, ContainerRequestContext requestContext, String fileFormat) {
         CursoAlunoEntity qParams = new CursoAlunoEntity();
@@ -34,7 +39,7 @@ public class ContentService {
                                 .and("cursoId", qParams.getCurso().getId()))
                 .firstResult();
 
-        Documento doc = new EstadoCursoDocumento(usuario, curso);
+        DocumentoTemplate doc = new EstadoCursoDocumentoTemplate(usuario, cursoAlunoMapper.toBodyItem(curso, usuario));
 
         DocumentoFactory factory = DocumentoFactory.getFactoryForFileFormat(fileFormat);
         return factory.create(doc);

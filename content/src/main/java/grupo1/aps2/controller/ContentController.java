@@ -146,8 +146,9 @@ public class ContentController {
     @Path("/gerarEstadoCursoPdf/{idCurso}")
     @Produces("application/pdf")
     public Response gerarEstadoCurso(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext) {
+        byte[] pdfContent = contentService.gerarEstadoCurso(idCurso, requestContext,"pdf").toByteArray();
         return Response
-                .ok(contentService.gerarEstadoCurso(idCurso, requestContext,"pdf"))
+                .ok(pdfContent)
                 .type("application/pdf")
                 .build();
     }
