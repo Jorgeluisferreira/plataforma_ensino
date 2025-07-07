@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuLateralComponent } from '../components/menu-lateral/menu-lateral.component';
 import { CommonModule } from '@angular/common';
 import { ItemComponent } from '../components/item/item.component';
 import { AuthService } from '../services/auth.service';
+import { ReactiveFormsModule } from '@angular/forms'; 
 import { HeaderComponent } from '../components/header/header.component';
 import { FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { CursosService } from '../services/cursos.service';
 
 @Component({
   selector: 'app-area-usuario',
-  imports: [CommonModule, MenuLateralComponent, FormsModule, ItemComponent, HeaderComponent],
+  imports: [CommonModule, MenuLateralComponent, FormsModule,ReactiveFormsModule, ItemComponent, HeaderComponent],
   templateUrl: './area-usuario.component.html',
   styleUrl: './area-usuario.component.css'
 })
@@ -35,12 +38,16 @@ export class AreaUsuarioComponent {
   ];
 
   modoEdicao = false;
+  isAluno = false;
   usuario: any;
   cursosUsuario: any[] = [];
   usuarioBackup: any = {}; // Para cancelar edições
   cursosConcluidos = this.cursosDoUsuario.filter(curso => curso.progressoPercentual === 100);
+  cursosTeste: any;
 
   constructor(private authService: AuthService) {}
+
+  private cursoService = inject(CursosService);
 
   habilitarEdicao() {
   this.usuarioBackup = { ...this.usuario };
@@ -58,12 +65,69 @@ export class AreaUsuarioComponent {
     this.modoEdicao = false;
   }
 
+  // area professor
+  modoNovoCurso = false;
+  cursoEditando: any = null;
+
+  cursoForm = new FormGroup({
+    nome: new FormControl('', Validators.required),
+    descricao: new FormControl('', Validators.required),
+    aulas: new FormArray([])
+  });
+
+  get aulas(): FormArray {
+    return this.cursoForm.get('aulas') as FormArray;
+  }
+
+  adicionarAula() {
+    const aula = new FormGroup({
+      titulo: new FormControl('', Validators.required),
+      duracao: new FormControl('', Validators.required)
+    });
+
+    this.aulas.push(aula);
+  }
+
+  removerAula(index: number) {
+    this.aulas.removeAt(index);
+  }
+
+  cadastrarCurso() {
+    if (this.cursoForm.valid) {
+      const dados = this.cursoForm.value;
+      const dadosParaEnviar = { ...this.cursoForm.value };
+      delete dadosParaEnviar.aulas;
+      console.log('Enviando curso:', dadosParaEnviar);
+
+      this.cursoService.cadastrarCurso(dadosParaEnviar).subscribe({
+        next: (res) => {
+          console.log('Curso cadastrado com sucesso:', res);
+        },
+        error: (err) => {
+          console.error('Erro ao cadastrar curso:', err);
+        }
+      });
+  } else {
+    console.warn("Formulário inválido");
+  }
+  }
+
   ngOnInit(): void {
+
+    this.cursoService.getCursos().subscribe({
+      next: (res) => {
+        console.log('cursos', res );
+        this.cursosTeste = res
+      }
+    })
      this.authService.getUser().subscribe({
       next: (res) => {
         console.log('Usuário logado:', res);
         this.usuario = res;
         localStorage.setItem('usuario', JSON.stringify(this.usuario));
+        if(this.usuario.roles == 'Aluno'){
+          this.isAluno = true;
+        }
       },
       error: (err) => {
         if (err.status === 400 || err.status === 401) {
