@@ -22,25 +22,10 @@ export class AreaUsuarioComponent {
     this.selectedSection = section;
   }
 
-  cursosDoUsuario = [
-  {
-    id: 1,
-    nome: 'Curso Angular Básico',
-    imagemUrl: 'https://www.diariodeinvestimentos.com.br/wp-content/uploads/2021/09/thiago-nigro-primo-rico.jpg',
-    progressoPercentual: 40
-  },
-  {
-    id: 2,
-    nome: 'Curso de Node.js',
-    imagemUrl: 'https://static.poder360.com.br/2024/09/pablo-marcal-retrato-848x477.jpg',
-    progressoPercentual: 100
-  }
-  ];
-
   modoEdicao = false;
   isAluno = false;
   usuario: any;
-  cursosUsuario: any[] = [];
+  cursosDoUsuario: any[] = [];
   usuarioBackup: any = {}; // Para cancelar edições
   cursosConcluidos = this.cursosDoUsuario.filter(curso => curso.progressoPercentual === 100);
   cursosTeste: any;
@@ -108,6 +93,7 @@ export class AreaUsuarioComponent {
         const parsed = typeof res === 'string' ? JSON.parse(res) : res;
         console.log('Curso cadastrado com sucesso:', parsed);
         const idCurso = parsed.id;
+        this.assinarCurso(idCurso);
 
         const aulasComId = aulas.map((aula: any) => ({
           curso_id: idCurso,
@@ -141,20 +127,46 @@ export class AreaUsuarioComponent {
     });
   }
 
-  ngOnInit(): void {
-
-    this.cursoService.getCursos().subscribe({
+  assinarCurso(id:any){
+    this.cursoService.assinarCurso(id).subscribe({
       next: (res) => {
-        console.log('cursos', res );
-        this.cursosTeste = res
+        console.log(res);
+      },
+      error: (err) => {
+        console.error('erro ao assinar', err)
       }
     })
+  }
+
+  getThumbnailUrl(videoUrl: string): string {
+    const match = videoUrl.match(/(?:embed\/|v=)([^?&]+)/);
+    const videoId = match ? match[1] : null;
+    return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+  }
+
+  ngOnInit(): void {
+
     this.cursoService.getAulas().subscribe({
       next: (res) => {
         console.log('aulas', res );
       }
     })
 
+    this.cursoService.getCursosUsuario().subscribe({
+      next: (cursos) => {
+        console.log('cursos do user', cursos );
+        cursos.forEach((curso: any) => {
+          this.cursoService.getAulasCurso(curso.id).subscribe({
+            next: (res) => {
+              console.log('deveria funcionar', res)
+              curso.contentURL = res[0].contentURL
+            }
+          })
+        })
+        this.cursosDoUsuario = cursos;
+    }});
+
+     
 
      this.authService.getUser().subscribe({
       next: (res) => {

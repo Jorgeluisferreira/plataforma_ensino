@@ -41,6 +41,24 @@ public class ContentRepository {
         return resultados.isEmpty() ? null : resultados.get(0);
     }
 
+    public AulaEntity searchAulaById(Long aulaId) {
+        List<AulaEntity> resultados = em.createQuery(
+            "FROM AulaEntity WHERE id = :aulaId", AulaEntity.class)
+            .setParameter("aulaId", aulaId)
+            .getResultList();
+
+        return resultados.isEmpty() ? null : resultados.get(0);
+    }
+
+    public List<AulaEntity> searchAulaByCurso(Long curso_id){
+        List<AulaEntity> resultados = em.createQuery(
+            "FROM AulaEntity WHERE curso_id = :curso_id", AulaEntity.class)
+            .setParameter("curso_id", curso_id)
+            .getResultList();
+
+        return resultados.isEmpty() ? null : resultados;
+    }
+
 
     public List<AulaEntity> listAllLessons() {
         return em.createQuery("from AulaEntity", AulaEntity.class).getResultList();

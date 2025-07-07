@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+
+import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.exceptions.ExceptionUtil;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
@@ -32,15 +36,23 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
         String jwtToken = jwtCookie.getValue();
         System.out.println("Token JWT recebido via cookie: " + jwtToken);
-        // if (jwt == null || jwt.getIssuer() == null) {
-        //     ExceptionUtil.throwException(401, "JWT não encontrado ou inválido");
-        // }
-        // Long id = Long.parseLong(jwt.getClaim("id"));
-        // String nome = jwt.getClaim("nome");
-        // String role = jwt.getClaim("roles");
-        // UsuarioDTO usuarioDTO = new UsuarioDTO(id, nome, role);
 
-        // // Aqui você pode salvar o usuarioDTO em algum contexto, se necessário
-        // requestContext.setProperty("usuario", usuarioDTO);
+        try {
+            // Parse do token
+            SignedJWT signedJWT = SignedJWT.parse(jwtToken);
+            JWTClaimsSet claims = signedJWT.getJWTClaimsSet();
+
+            Long id = Long.parseLong( (String) claims.getClaim("id"));
+            String nome = (String) claims.getClaim("nome");
+            String role = (String) claims.getClaim("roles");
+    
+            UsuarioDTO usuarioDTO = new UsuarioDTO(id, nome, role);
+
+            // aqui você pode armazenar as infos no contexto da requisição se quiser
+            requestContext.setProperty("usuario", usuarioDTO);
+
+        } catch (Exception e) {
+            ExceptionUtil.throwException(401, "JWT inválido: " + e.getMessage());
+        }
     }
 }

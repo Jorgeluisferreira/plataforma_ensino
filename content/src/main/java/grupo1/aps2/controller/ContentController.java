@@ -1,24 +1,13 @@
 package grupo1.aps2.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import grupo1.aps2.dto.DTOCurso.CursoDTO;
-import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
-import grupo1.aps2.service.ContentService;
-import grupo1.aps2.service.estados.EstadoCursoEnum;
-import grupo1.aps2.service.relatorios.Documento;
-import grupo1.aps2.service.relatorios.EstadoCursoDocumento;
-import grupo1.aps2.service.relatorios.factory.DocumentoFactory;
-import grupo1.aps2.service.relatorios.factory.DocumentoHTMLFactory;
-import grupo1.aps2.service.relatorios.factory.DocumentoPDFFactory;
-import io.quarkus.panache.common.Parameters;
-import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.core.Context;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import grupo1.aps2.dto.DTOAula;
 import grupo1.aps2.dto.DTOCurso;
+import grupo1.aps2.dto.DTOCurso.CursoDTO;
+import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.mapper.AulaMapper;
 import grupo1.aps2.mapper.CursoAlunoMapper;
 import grupo1.aps2.mapper.CursoMapper;
@@ -26,6 +15,8 @@ import grupo1.aps2.model.AulaEntity;
 import grupo1.aps2.model.CursoAlunoEntity;
 import grupo1.aps2.model.CursoEntity;
 import grupo1.aps2.repository.ContentRepository;
+import grupo1.aps2.service.ContentService;
+import grupo1.aps2.service.estados.EstadoCursoEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -35,6 +26,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -90,6 +83,18 @@ public class ContentController {
     }
 
     @GET
+    @Path("/lerAula/{aula_id}")
+    public AulaEntity procuraAulaPorId(@PathParam("aula_id") Long aula_id){
+        return repository.searchAulaById(aula_id);
+    }
+
+    @GET
+    @Path("/lerAulaPorCurso/{Curso_id}")
+    public List<AulaEntity> procuraAulaPorCurso(@PathParam("Curso_id") Long curso_id){
+        return repository.searchAulaByCurso(curso_id);
+    }
+
+    @GET
     @Path("/lerAulas")
     public List<DTOAula.CadastroAulaDTO> listLessons() {
         return repository.listAllLessons()
@@ -97,6 +102,17 @@ public class ContentController {
                          .map(aulaMapper::map)
                          .toList();
     }
+
+    @GET
+    @Path("/lerCursosUsuario")
+    public List<CursoEntity> listarCursosPorUsuario(@Context ContainerRequestContext requestContext) {
+        UsuarioDTO usuario = (UsuarioDTO) requestContext.getProperty("usuario");
+        return CursoAlunoEntity.find("usuarioId", usuario.getId())
+                .stream()
+                .map(ca -> ((CursoAlunoEntity) ca).getCurso())
+                .toList();
+    }
+
 
     @POST
     @Path("/assinarCurso/{curso_id}")
@@ -135,5 +151,6 @@ public class ContentController {
                 .type("application/pdf")
                 .build();
     }
+
 
 }   

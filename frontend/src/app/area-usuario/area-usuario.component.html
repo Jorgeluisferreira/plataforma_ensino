@@ -101,10 +101,7 @@
 
         <div class="curso-card" *ngFor="let curso of cursosDoUsuario">
           <div class="imagem-curso">
-            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
-              <div class="progresso-container">
-                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
-              </div>
+            <img [src]="getThumbnailUrl(curso.contentURL)" [alt]="curso.nome" />
           </div>
           <h4 class="titulo">{{ curso.nome }}</h4>
           <div class="btn">
