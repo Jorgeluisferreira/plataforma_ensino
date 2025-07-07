@@ -1,15 +1,15 @@
 package grupo1.aps2.service.estados;
 
 public enum EstadoCursoEnum {
-    DISPONIVEL,
+    NAO_MATRICULADO,
     EM_ANDAMENTO,
-    ENCERRADO;
+    CONCLUIDO;
 
     public static EstadoCurso toEstadoCurso(EstadoCursoEnum estadoEnum) {
         return switch (estadoEnum) {
-            case DISPONIVEL -> new CursoDisponivel();
+            case NAO_MATRICULADO -> new CursoNaoMatriculado();
             case EM_ANDAMENTO -> new CursoEmAndamento();
-            case ENCERRADO -> new CursoEncerrado();
+            case CONCLUIDO -> new CursoConcluido();
         };
     }
 

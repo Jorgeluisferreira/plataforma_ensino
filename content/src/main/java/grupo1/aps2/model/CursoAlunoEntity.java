@@ -16,7 +16,7 @@ public class CursoAlunoEntity extends PanacheEntityBase {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private CursoEntity curso;
 
     @NotNull
@@ -26,5 +26,6 @@ public class CursoAlunoEntity extends PanacheEntityBase {
     @Enumerated(EnumType.STRING)
     private EstadoCursoEnum status;
 
+    private String dataHoraConclusao;
 }
 

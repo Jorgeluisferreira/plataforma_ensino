@@ -15,6 +15,9 @@ import org.mapstruct.ReportingPolicy;
 
 import grupo1.aps2.model.CursoAlunoEntity;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA,
     unmappedSourcePolicy = ReportingPolicy.IGNORE,
@@ -36,6 +39,8 @@ public abstract class CursoAlunoMapper {
         dto.setCurso(cursoMapper.map(source.getCurso()));
         dto.setUsuario(usuario);
         dto.setStatus(source.getStatus());
+        if (source.getDataHoraConclusao() != null && !source.getDataHoraConclusao().isBlank())
+            dto.setDataHoraConclusao(LocalDateTime.parse(source.getDataHoraConclusao(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
 
         return dto;
     }
@@ -50,6 +55,8 @@ public abstract class CursoAlunoMapper {
         dto.setCurso(cursoMapper.map(source.getCurso()));
         dto.setUsuario(usuario);
         dto.setStatus(source.getStatus());
+        if (source.getDataHoraConclusao() != null && !source.getDataHoraConclusao().isBlank())
+            dto.setDataHoraConclusao(LocalDateTime.parse(source.getDataHoraConclusao(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
 
         return dto;
     }
@@ -67,6 +74,7 @@ public abstract class CursoAlunoMapper {
         dto.setCurso(cursoMapper.map(source.getCurso()));
         dto.setUsuario(usuario);
         dto.setStatus(source.getStatus());
+        dto.setDataHoraConclusao(LocalDateTime.parse(source.getDataHoraConclusao(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
 
         return dto;
     }

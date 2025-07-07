@@ -3,10 +3,12 @@ package grupo1.aps2.service.relatorios;
 import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoBodyItem;
 import grupo1.aps2.dto.DTOUsuario;
 import grupo1.aps2.service.relatorios.template.BodyItem;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
 public class ListaCursosMatriculadoDocumentoTemplate extends DocumentoTemplate {
 
     DTOUsuario.UsuarioDTO usuario;
@@ -28,8 +30,18 @@ public class ListaCursosMatriculadoDocumentoTemplate extends DocumentoTemplate {
     }
 
     @Override
-    protected LocalDateTime getDocumentTimestamp() {
+    protected LocalDateTime getDocumentGenerationTimestamp() {
         return LocalDateTime.now();
+    }
+
+    @Override
+    protected LocalDateTime getDocumentOriginalTimestamp() {
+        return LocalDateTime.now();
+    }
+
+    @Override
+    protected LocalDateTime getDocumentExpirationTimestamp() {
+        return LocalDateTime.now().plusMonths(1);
     }
 
     @Override
@@ -45,5 +57,17 @@ public class ListaCursosMatriculadoDocumentoTemplate extends DocumentoTemplate {
     @Override
     public boolean isValid() {
         return true;
+    }
+
+    @Override
+    public void setUsuario(DTOUsuario.UsuarioDTO usuario) {
+        this.usuario = usuario;
+    }
+
+    @Override
+    public void setBodyContent(List<BodyItem> bodyContent) {
+        this.cursos = bodyContent.stream()
+                .map(item -> (CursoAlunoBodyItem) item)
+                .toList();
     }
 }

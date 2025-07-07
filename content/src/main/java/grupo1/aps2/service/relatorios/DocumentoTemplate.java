@@ -10,7 +10,7 @@ public abstract class DocumentoTemplate {
 
     public Header getHeader() {
         Header hd = new Header();
-        hd.setDataHora(getDocumentTimestamp());
+        hd.setDataHora(getDocumentGenerationTimestamp());
         hd.setTitulo("Areas Academy - ");
         return hd;
     }
@@ -32,9 +32,13 @@ public abstract class DocumentoTemplate {
 
     public abstract UsuarioDTO getUsuario();
     protected abstract String getDocumentTitle();
-    protected abstract LocalDateTime getDocumentTimestamp();
+    protected abstract LocalDateTime getDocumentGenerationTimestamp();
+    protected abstract LocalDateTime getDocumentOriginalTimestamp();
+    protected abstract LocalDateTime getDocumentExpirationTimestamp();
     protected abstract List<BodyItem> getBodyContent();
     protected abstract String getBodyTitle();
 
     public abstract boolean isValid();
+    public abstract void setUsuario(UsuarioDTO usuario);
+    public abstract void setBodyContent(List<BodyItem> bodyContent);
 }

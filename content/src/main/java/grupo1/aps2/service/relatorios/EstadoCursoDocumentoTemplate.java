@@ -4,10 +4,12 @@ import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoBodyItem;
 import grupo1.aps2.dto.DTOUsuario;
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.service.relatorios.template.BodyItem;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
 public class EstadoCursoDocumentoTemplate extends DocumentoTemplate {
 
     UsuarioDTO usuario;
@@ -29,8 +31,18 @@ public class EstadoCursoDocumentoTemplate extends DocumentoTemplate {
     }
 
     @Override
-    protected LocalDateTime getDocumentTimestamp() {
+    protected LocalDateTime getDocumentGenerationTimestamp() {
         return LocalDateTime.now();
+    }
+
+    @Override
+    protected LocalDateTime getDocumentOriginalTimestamp() {
+        return LocalDateTime.now();
+    }
+
+    @Override
+    protected LocalDateTime getDocumentExpirationTimestamp() {
+        return LocalDateTime.now().plusMonths(3);
     }
 
     @Override
@@ -46,5 +58,15 @@ public class EstadoCursoDocumentoTemplate extends DocumentoTemplate {
     @Override
     public boolean isValid() {
         return true;
+    }
+
+    @Override
+    public void setUsuario(UsuarioDTO usuario) {
+        this.usuario = usuario;
+    }
+
+    @Override
+    public void setBodyContent(List<BodyItem> bodyContent) {
+        this.curso = (CursoAlunoBodyItem) bodyContent.getFirst();
     }
 }

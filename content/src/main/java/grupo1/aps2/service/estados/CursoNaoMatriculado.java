@@ -1,13 +1,12 @@
 package grupo1.aps2.service.estados;
 
-import grupo1.aps2.dto.DTOCursoAluno;
-import grupo1.aps2.dto.DTOUsuario;
+import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.service.relatorios.DocumentoTemplate;
 import grupo1.aps2.service.relatorios.EstadoCursoDocumentoTemplate;
 
-public class CursoEmAndamento implements EstadoCurso{
+public class CursoNaoMatriculado implements EstadoCurso{
     public void enviarAtividade(){
-        
+        ExceptionUtil.throwException(400, "Curso ainda não iniciado, não é possível enviar atividades.");
     }
 
     public DocumentoTemplate receberCertificado(){
@@ -15,11 +14,11 @@ public class CursoEmAndamento implements EstadoCurso{
     }
 
     public EstadoCurso concluirEtapa(){
-        return new CursoConcluido();
+        return new CursoEmAndamento();   
     }
 
     @Override
     public EstadoCursoEnum toEnum() {
-        return EstadoCursoEnum.EM_ANDAMENTO;
+        return EstadoCursoEnum.NAO_MATRICULADO;
     }
 }

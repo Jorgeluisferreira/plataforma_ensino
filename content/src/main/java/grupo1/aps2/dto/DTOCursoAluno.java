@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 public class DTOCursoAluno {
     private DTOCursoAluno(){}
 
@@ -18,6 +20,7 @@ public class DTOCursoAluno {
         protected UsuarioDTO usuario;
         protected DTOCurso.CursoDTO curso;
         protected EstadoCursoEnum status;
+        protected LocalDateTime dataHoraConclusao;
     }
 
     @Getter @Setter
@@ -28,6 +31,7 @@ public class DTOCursoAluno {
         protected UsuarioDTO usuario;
         protected DTOCurso.CursoDTO curso;
         protected EstadoCursoEnum status;
+        protected LocalDateTime dataHoraConclusao;
 
         @Override
         public String getNome() {

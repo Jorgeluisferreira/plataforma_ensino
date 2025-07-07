@@ -71,9 +71,12 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
         StringBuilder body = new StringBuilder();
 
         if (doc.getUsuario() != null) {
-            body.append("<h2>Usuário</h2>")
-                .append("<p>Nome: ").append(doc.getUsuario().getNome()).append("</p>")
-                .append("<p>Função: ").append(doc.getUsuario().getRole()).append("</p>");
+
+            body.append("<div>")
+                .append("<h4>Documento referente à: </h4>")
+                .append("<p>Nome: ").append(doc.getUsuario().getNome())
+                .append("<br>Função: ").append(doc.getUsuario().getRole()).append("</p>")
+                .append("</div>");
         }
 
         Body itemBody = doc.getBody();
@@ -81,11 +84,13 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
             for (BodyItem item : itemBody.getConteudo()) {
                 body.append("<div><strong>")
                         .append(item.getNome())
-                        .append("</strong>: ")
-                        .append(item.getDescricao())
-                        .append(" <em>(")
-                        .append(item.getEstadoItem())
-                        .append(")</em></div>");
+                        .append("</strong> ")
+                        .append(item.getDescricao());
+                if (item.getEstadoItem() != null && !item.getEstadoItem().isBlank()) {
+                    body.append(" <em>(")
+                            .append(item.getEstadoItem())
+                            .append(")</em></div>");
+                }
             }
         }
         return body.toString();
