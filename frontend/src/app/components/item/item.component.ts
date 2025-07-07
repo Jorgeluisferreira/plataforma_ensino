@@ -13,4 +13,6 @@ export class ItemComponent {
   @Input() link = '';
   @Input() botao ='';
   @Input() tipo='';
+  @Input() imagem='';
+
 }

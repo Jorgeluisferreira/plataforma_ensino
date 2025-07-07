@@ -40,7 +40,7 @@
 <div class="courses">
     <h1>Cursos disponíveis</h1>
     <div class="carousel">
-        <app-item tipo="item" titulo="Titulo 1" descricao="descrição do item" botao='Adcionar ao carrinho'></app-item>
+        <app-item *ngFor="let curso of cursos" tipo="item" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assinar'></app-item>
     </div>
 </div>
 

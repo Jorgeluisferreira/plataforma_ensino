@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemComponent } from '../components/item/item.component';
 import { AuthService } from '../services/auth.service';
 import { HeaderComponent } from '../components/header/header.component';
 import { RouterLink } from '@angular/router';
+import { CursosService } from '../services/cursos.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,17 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent {
   usuario: any; // ou crie um tipo/interface se preferir
 
+  cursos: any[] = [];
+
   constructor(private authService: AuthService) {}
+  
+  private cursoService = inject(CursosService);
+
+  getThumbnailUrl(videoUrl: string): string {
+    const match = videoUrl.match(/(?:embed\/|v=)([^?&]+)/);
+    const videoId = match ? match[1] : null;
+    return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+  }
 
   ngOnInit(): void {
     this.authService.getUser().subscribe({
@@ -32,6 +43,21 @@ export class HomeComponent {
         }
       }
     });
+
+    this.cursoService.getCursos().subscribe({
+      next: (res) => {
+        res.forEach((curso: any) => {
+          this.cursoService.getAulasCurso(curso.id).subscribe({
+            next: (res) => {
+              console.log('deveria funcionar', res)
+              curso.contentURL = res[0].contentURL
+            }
+          })
+        })
+        this.cursos = res
+        console.log(res)
+      }
+    })
 
 
   }
