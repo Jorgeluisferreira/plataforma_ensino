@@ -3,6 +3,7 @@ package grupo1.aps2.service;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import grupo1.aps2.dto.DTOUsuario;
+import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.mapper.UsuarioMapper;
 import grupo1.aps2.model.UsuarioEntity;
@@ -73,5 +74,13 @@ public class UsuarioService {
         if (entity == null || !BcryptUtil.matches(credenciais.senha(), entity.getSenha())) {
             ExceptionUtil.throwException(400, "Usuário ou senha inválidos");
         }
+    }
+
+    public UsuarioDTO buscarUsuarioPorEmail(String email) {
+        UsuarioEntity usuario = UsuarioEntity.find("email", email).firstResult();
+        if (usuario == null) {
+            ExceptionUtil.throwException(404, "Usuário não encontrado");
+        }
+        return new UsuarioDTO(usuario.getNome(), usuario.getEmail(), usuario.getRoles());
     }
 }

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ export class AuthService {
   getUser(): Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/UsuarioInfos`, {}, {withCredentials: true});
   }
-  
+
   // POST - cria um novo usuário
   createUser(data: any): Observable<any> {
     console.log(data)
@@ -33,12 +35,54 @@ export class AuthService {
     });
   }
 
-  //POST - login de usuario
-  login(email:string, password:string): Observable<any>{
-    const headers = {
+  login(email: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({
       Authorization: 'Basic ' + btoa(`${email}:${password}`)
-    };
-    return this.http.post(`${this.apiUrl}/login`,{}, {headers, withCredentials: true, responseType: 'text'});
+    });
+
+    return new Observable(observer => {
+      this.http.post<any>(`${this.apiUrl}/login`, null, { headers, responseType: 'json', withCredentials: true })
+        .subscribe({
+
+          next: (res) => {
+            // Resposta esperada: { token: string, usuario: object }
+            const token = res.token;
+            const usuario = res.usuario;
+
+            if (!token) {
+              observer.error('Token não recebido no login.');
+              return;
+            }
+            console.log('Token recebido:', token);
+            // Monta header para buscar infos do usuário
+            const infoHeaders = new HttpHeaders({
+              Authorization: 'Bearer ' + token
+            });
+            console.log('Header Authorization para /UsuarioInfos:', infoHeaders.get('Authorization'));
+
+            this.http.post<any>(`${this.apiUrl}/login`, null, { headers, responseType: 'json' })
+              .subscribe({
+                next: (usuarioInfo) => {
+                  const userData = {
+                    ...usuarioInfo,
+                    token: token
+                  };
+                  this.loginLocal(userData);
+                  observer.next(userData);
+                  observer.complete();
+                },
+                error: (err) => {
+                  console.error('Erro ao buscar infos do usuário:', err);
+                  observer.error(err);
+                }
+              });
+          },
+          error: (err) => {
+            console.error('Erro no login:', err);
+            observer.error(err);
+          }
+        });
+    });
   }
 
   // PUT - atualiza usuário
@@ -64,10 +108,10 @@ export class AuthService {
   }
 }
 
-  loginLocal(user: any) {
-    localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSubject.next(user);
-  }
+ loginLocal(user: any) {
+   localStorage.setItem('user', JSON.stringify(user));
+   this.currentUserSubject.next(user);
+ }
 
   logout(){
     return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true, responseType: 'text' })

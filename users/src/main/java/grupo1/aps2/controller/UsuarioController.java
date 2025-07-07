@@ -7,6 +7,7 @@ import java.util.List;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
 
+import grupo1.aps2.service.JwtService;
 import grupo1.aps2.dto.DTOUsuario;
 import grupo1.aps2.dto.DTOUsuario.CadastroUsuarioDTO;
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
@@ -37,6 +38,7 @@ import jakarta.ws.rs.core.NewCookie;
 public class UsuarioController {
 
     UsuarioService usuarioService;
+    JwtService jwtService = new JwtService();
 
     @Inject
     UsuarioController(UsuarioService usuarioService) {
@@ -132,37 +134,59 @@ public class UsuarioController {
     @Path("/cadastrarAdminBypass")
     @PermitAll
     public RestResponse<String> cadastrarAdminBypass(CadastroUsuarioDTO cadastro, @HeaderParam("Authorization") String authHeader) {
-        DTOUsuario.AuthCredentials credenciais = parseAuthorizationHeader(authHeader);
+        DTOUsuario.AuthCredentials credenciais = parseBasicAuthorizationHeader(authHeader);
         usuarioService.cadastrarAdminBypass(cadastro, credenciais);
         return ResponseBuilder.ok("Usuario cadastrado como administrador com sucesso").build();
     }
 
-    @POST
-    @Path("/login")
-    public RestResponse<String> login(@HeaderParam("Authorization") String authHeader) {
-        String token = usuarioService.logarUsuario(parseAuthorizationHeader(authHeader));
-        NewCookie cookie = new NewCookie("jwt", token, "/", null, null, 3600, true, true);
-        return ResponseBuilder
-                .ok(usuarioService.logarUsuario(parseAuthorizationHeader(authHeader)))
-                .header("Set-Cookie", cookie)
-                .build();
+    DTOUsuario.AuthCredentials parseBasicAuthorizationHeader(String authHeader) {
+        try {
+            // Remove "Basic " do início
+            String base64Credentials = authHeader.substring("Basic ".length()).trim();
+
+            // Decodifica Base64 para string "email:senha"
+            String credentials = new String(Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8);
+
+            // Divide email e senha
+            String[] values = credentials.split(":", 2);
+            if (values.length != 2) {
+                ExceptionUtil.throwException(401, MensagemErro.INVALID_AUTH_HEADER);
+            }
+
+            return new DTOUsuario.AuthCredentials(values[0], values[1]);
+        } catch (IllegalArgumentException e) {
+            ExceptionUtil.throwException(401, MensagemErro.INVALID_AUTH_HEADER);
+            return null; // Nunca chega aqui
+        }
     }
 
-    private DTOUsuario.AuthCredentials parseAuthorizationHeader(String authHeader) {
+    @POST
+    @Path("/login")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse<?> login(@HeaderParam("Authorization") String authHeader) {
+        // Verifica se o header existe e começa com "Basic "
         if (authHeader == null || !authHeader.startsWith("Basic ")) {
             ExceptionUtil.throwException(401, MensagemErro.INVALID_AUTH_HEADER);
         }
-        String base64Credentials = authHeader.substring("Basic ".length());
-        String[] values = new String[2];
-        try {
-            values = new String(
-                    Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8)
-                    .split(":", 2);
 
-        } catch (IllegalArgumentException e) {
-            Log.error("Erro ao decodificar o cabeçalho de autorização: " + e.getMessage());
-            ExceptionUtil.throwException(400, MensagemErro.INVALID_AUTH_HEADER);
+        // Decodifica o Basic Auth
+        DTOUsuario.AuthCredentials credenciais = parseBasicAuthorizationHeader(authHeader);
+
+        // Valida credenciais e gera token JWT
+        String token = usuarioService.logarUsuario(credenciais); // Aqui o método deve validar email e senha
+
+        if (token == null || token.isEmpty()) {
+            ExceptionUtil.throwException(401, "Usuário ou senha inválidos");
         }
-        return new DTOUsuario.AuthCredentials(values[0], values[1]);
+
+        // Busca dados do usuário
+        UsuarioDTO usuario = usuarioService.buscarUsuarioPorEmail(credenciais.email());
+
+        // Monta resposta com token e usuário
+        var resposta = new java.util.HashMap<String, Object>();
+        resposta.put("token", token);
+        resposta.put("usuario", usuario);
+
+        return RestResponse.ResponseBuilder.ok(resposta).build();
     }
 }

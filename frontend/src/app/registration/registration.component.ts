@@ -72,19 +72,21 @@ export class RegistrationComponent implements OnInit {
   );
   }
 
-  login(){
-      this.authServise.login(this.email,this.senha).subscribe({
-        next: (response) => {
-          console.log('Login bem sucedido', response);
-          localStorage.setItem('user',(response.user))
-          this.router.navigate(['/'])
-        },
-        error: (error) =>{
-          console.log('Falha no login', error);
-          alert('Email ou senha invalidos')
-        }
-      })
+  login() {
+    this.authServise.login(this.email, this.senha).subscribe({
+      next: (response) => {
+        console.log('Login bem sucedido', response);
+        // response já está salvo no localStorage dentro do auth.service (loginLocal)
+        // então não precisa salvar aqui de novo, só redirecionar
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.log('Falha no login', error);
+        alert('Email ou senha inválidos');
+      }
+    });
   }
+
 
   deleteUser(){
     this.authServise.deleteUser(5).subscribe({

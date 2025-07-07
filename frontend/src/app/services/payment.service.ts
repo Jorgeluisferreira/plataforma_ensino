@@ -12,11 +12,22 @@ export class PaymentService {
   constructor(private http: HttpClient) {}
 
   processPayment(paymentData: any): Observable<any> {
+    const user = this.getUserFromStorage();
+    const token = user?.token ?? '';
+
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer SEU_JWT_AQUI', // depois você substitui pelo token real
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
 
     return this.http.post(this.apiUrl, paymentData, { headers });
+  }
+
+  getUserFromStorage() {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      return JSON.parse(userString);
+    }
+    return null;
   }
 }
