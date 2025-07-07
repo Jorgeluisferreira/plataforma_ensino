@@ -3,7 +3,6 @@ package grupo1.aps2.controller;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
-import java.util.Collection;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
@@ -19,9 +18,7 @@ import grupo1.aps2.service.UsuarioService;
 import io.quarkus.logging.Log;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import io.smallrye.jwt.auth.principal.JWTParser;
-import jakarta.ws.rs.core.NewCookie;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -34,7 +31,6 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
-import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 @Path("users")
@@ -76,7 +72,7 @@ public class UsuarioController {
             // Pega informações do payload
             String nome = parsedToken.getClaim("nome"); // normalmente é o "upn" ou "sub"
             String email = parsedToken.getClaim("email");
-            Collection<String> roles = parsedToken.getClaim("roles");
+            String roles = parsedToken.getClaim("roles");
 
             dados = new UsuarioDTO(nome, email, roles);
             

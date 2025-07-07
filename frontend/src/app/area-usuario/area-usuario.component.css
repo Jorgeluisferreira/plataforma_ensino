@@ -58,14 +58,11 @@ body {
   background-color: #fefefe;
 }
 
-.usuario-cursos{
+.usuario-cursos,
+.certificados,
+.progresso {
   display: flex;
   width: 100%;
-}
-
-.usuario-cursos,
-.cursos,
-.progresso {
   background-color: var(--accent-color);
   padding: 1.5rem;
   border-radius: var(--border-radius);
@@ -83,6 +80,67 @@ body {
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.2s ease-in-out;
+}
+
+.novo-curso:hover{
+  cursor: pointer;
+}
+
+
+.voltar {
+  cursor: pointer;
+  color: #1E3A8A;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.form-novo-curso {
+  max-width: 500px;
+  padding: 30px;
+}
+
+.form-novo-curso label {
+  display: block;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-novo-curso input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-novo-curso input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+
+.form-novo-curso button {
+  display: inline-block;
+  background-color: #1E3A8A;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.form-novo-curso button:hover {
+  background-color: #F97316;
 }
 
 .curso-card:hover {
@@ -142,6 +200,73 @@ body {
 .titulo {
   text-align: center;
 }
+
+
+.configuracoes {
+  width: 95%;
+  margin: 0;
+  padding: 2rem;
+}
+
+.configuracoes h2 {
+  text-align: start;
+  color: #1E3A8A;
+  margin-bottom: 1.5rem;
+}
+
+.form-conta label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.form-conta input {
+  width: 50%;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.botoes-conta {
+  display: flex;
+  justify-content: start;
+  margin-top: 2rem;
+  gap: 25px;
+}
+
+.btn-editar{
+  background-color: #1E3A8A;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-salvar {
+  background-color: #1E3A8A;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-excluir {
+  background-color: transparent;
+  color: #dc2626;
+  border: 2px solid #dc2626;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-excluir:hover {
+  background-color: #dc2626;
+  color: white;
+}
+
 
 
 .footer {

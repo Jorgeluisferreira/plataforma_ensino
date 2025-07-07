@@ -1,3 +1,0 @@
-2025-07-06 20:27:17.793165-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CURSOENTITY" not found; SQL statement:
-select ce1_0.id,ce1_0.descricao,ce1_0.nome from CursoEntity ce1_0 [42102-230]

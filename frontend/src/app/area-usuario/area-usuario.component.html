@@ -1,5 +1,5 @@
 <app-header />
-<div class="area-usuario-container">
+<div class="area-usuario-container" *ngIf="isAluno">
   <nav class="menu-lateral">
     <a (click)="selectSection('cursos')">Meus Cursos</a>
     <a (click)="selectSection('certificados')">Certificados</a>
@@ -28,9 +28,21 @@
 
       </section>
 
-      <section *ngSwitchCase="'certificados'" class="cursos card">
-        <h3>Seus cursos</h3>
-        <p>Curso de Angular, HTML e mais.</p>
+      <section *ngSwitchCase="'certificados'" class="certificados">
+        
+        <div class="curso-card" *ngFor="let curso of cursosConcluidos">
+          <div class="imagem-curso">
+            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
+              <div class="progresso-container">
+                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
+              </div>
+          </div>
+          <h4 class="titulo">{{ curso.nome }}</h4>
+          <div class="btn">
+            <button >Gerar certificado</button>
+          </div>
+        </div>
+
       </section>
 
       <section *ngSwitchCase="'relatorios'" class="progresso card">
@@ -38,9 +50,153 @@
         <p>Você concluiu 30% do curso.</p>
       </section>
 
-      <section *ngSwitchCase="'config'" class="card">
-        <h3>Outra seção</h3>
-        <p>Conteúdo personalizado.</p>
+      <section *ngSwitchCase="'config'" class="configuracoes">
+        <h2>Configurações da Conta</h2>
+
+        <form class="form-conta" >
+          <label>
+            Nome:
+            <input type="text" [(ngModel)]="usuario.nome" name="nome" required />
+          </label>
+
+          <label>
+            Email:
+            <input type="email" [(ngModel)]="usuario.email" name="email" required />
+          </label>
+
+          <div class="botoes-conta">
+            <button class="btn-editar" *ngIf="!modoEdicao" type="button" (click)="habilitarEdicao()">Editar</button>
+            <button class="btn-salvar" *ngIf="modoEdicao" type="submit">Salvar</button>
+            <button class="btn-excluir" *ngIf="modoEdicao" type="button" (click)="cancelarEdicao()">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+    </ng-container>
+  </div>
+</main>
+
+</div>
+
+<div class="area-usuario-container" *ngIf="!isAluno">
+  <nav class="menu-lateral">
+    <a (click)="selectSection('cursos')">Meus Cursos</a>
+    <a (click)="selectSection('certificados')">Certificados</a>
+    <a (click)="selectSection('relatorios')">Relatórios</a>
+    <a (click)="selectSection('config')">Configurações</a>
+  </nav>
+
+
+  <main class="area-usuario-content">
+  <div *ngIf="selectedSection" class="modal-like">
+    <ng-container [ngSwitch]="selectedSection">
+
+      <section *ngSwitchCase="'cursos'" class="usuario-cursos">
+        <div class="curso-card novo-curso" (click)="selectSection('novo-curso')">
+          <div class="imagem-curso">
+            <img style="object-fit: contain;" src="https://png.pngtree.com/png-vector/20240628/ourmid/pngtree-image-for-a-plus-symbol-with-shadow-black-round-icon-on-vector-png-image_7060587.png" />
+          </div>
+          <h4 class="titulo">Criar novo curso</h4>
+        </div>
+
+        <div class="curso-card" *ngFor="let curso of cursosDoUsuario">
+          <div class="imagem-curso">
+            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
+              <div class="progresso-container">
+                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
+              </div>
+          </div>
+          <h4 class="titulo">{{ curso.nome }}</h4>
+          <div class="btn">
+            <button >Editar curso</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section *ngSwitchCase="'novo-curso'" class="form-curso">
+        <div class="voltar" (click)="selectSection('cursos')">
+          ← Voltar
+        </div>
+
+        <form [formGroup]="cursoForm" class="form-novo-curso">
+          <label>
+            Nome do curso:
+            <input type="text" formControlName="nome" />
+          </label>
+
+          <label>
+            Descrição:
+            <input type="text" formControlName="descricao" />
+          </label>
+
+          <div formArrayName="aulas">
+            <div *ngFor="let aula of aulas.controls; let i = index" [formGroupName]="i" class="aula-item">
+              <label>
+                Título da aula:
+                <input type="text" formControlName="titulo" />
+              </label>
+              <label>
+                Descrição:
+                <input type="text" formControlName="duracao" />
+              </label>
+              <label>
+                Link do video:
+                <input type="text" formControlName="duracao" />
+              </label>
+              <button type="button" (click)="removerAula(i)">Remover</button>
+            </div>
+          </div>
+
+          <button type="button" (click)="adicionarAula()">Adicionar aula</button>
+          <button (click)="cadastrarCurso()">Criar curso</button>
+        </form>
+
+
+      </section>
+
+      <section *ngSwitchCase="'certificados'" class="certificados">
+        
+        <div class="curso-card" *ngFor="let curso of cursosConcluidos">
+          <div class="imagem-curso">
+            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
+              <div class="progresso-container">
+                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
+              </div>
+          </div>
+          <h4 class="titulo">{{ curso.nome }}</h4>
+          <div class="btn">
+            <button >Gerar certificado</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section *ngSwitchCase="'relatorios'" class="progresso card">
+        <h3>Progresso</h3>
+        <p>Você concluiu 30% do curso.</p>
+      </section>
+
+      <section *ngSwitchCase="'config'" class="configuracoes">
+        <h2>Configurações da Conta</h2>
+
+        <form class="form-conta" >
+          <label>
+            Nome:
+            <input type="text" [(ngModel)]="usuario.nome" name="nome" required />
+          </label>
+
+          <label>
+            Email:
+            <input type="email" [(ngModel)]="usuario.email" name="email" required />
+          </label>
+
+          <div class="botoes-conta">
+            <button class="btn-editar" *ngIf="!modoEdicao" type="button" (click)="habilitarEdicao()">Editar</button>
+            <button class="btn-salvar" *ngIf="modoEdicao" type="submit">Salvar</button>
+            <button class="btn-excluir" *ngIf="modoEdicao" type="button" (click)="cancelarEdicao()">Cancelar</button>
+          </div>
+        </form>
       </section>
 
     </ng-container>
