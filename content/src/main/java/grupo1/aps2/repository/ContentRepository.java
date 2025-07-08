@@ -23,6 +23,11 @@ public class ContentRepository {
     }
 
     @Transactional
+    public <T> T update(T entity) {
+        return em.merge(entity);
+    }
+
+    @Transactional
     public CursoAlunoEntity assinaCurso(CursoAlunoEntity entity){
         em.persist(entity);
         return entity;

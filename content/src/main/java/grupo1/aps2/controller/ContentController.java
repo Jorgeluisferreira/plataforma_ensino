@@ -1,13 +1,11 @@
 package grupo1.aps2.controller;
 
-import java.util.List;
-
-import org.jboss.resteasy.reactive.RestResponse.Status;
-
 import grupo1.aps2.dto.DTOAula;
 import grupo1.aps2.dto.DTOCurso;
 import grupo1.aps2.dto.DTOCurso.CursoDTO;
+import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoDTO;
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
+import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.mapper.AulaMapper;
 import grupo1.aps2.mapper.CursoAlunoMapper;
 import grupo1.aps2.mapper.CursoMapper;
@@ -16,20 +14,18 @@ import grupo1.aps2.model.CursoAlunoEntity;
 import grupo1.aps2.model.CursoEntity;
 import grupo1.aps2.repository.ContentRepository;
 import grupo1.aps2.service.ContentService;
-import grupo1.aps2.service.estados.EstadoCursoEnum;
+import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestResponse.Status;
+
+import java.util.List;
 
 @ApplicationScoped
 @Path("content")
@@ -117,17 +113,36 @@ public class ContentController {
     @POST
     @Path("/assinarCurso/{curso_id}")
     public Response assinarCurso (@Context ContainerRequestContext requestContext, @PathParam("curso_id") Long cursoId) {
-        CursoEntity curso = repository.searchCursoById(cursoId);
+
         UsuarioDTO usuario = (UsuarioDTO) requestContext.getProperty("usuario");
 
-        System.out.println("Assinando curso: " + cursoId + " para o usuário: " + usuario.getId());
+        List<CursoAlunoEntity> l = CursoAlunoEntity.find("usuarioId = :usuarioId and curso.id = :cursoId",
+                        Parameters.with("usuarioId", usuario.getId()).and("cursoId", cursoId))
+                .list();
 
-        CursoAlunoEntity entity = new CursoAlunoEntity();
-        entity.setCurso(curso);
-        entity.setUsuarioId(usuario.getId());
-        entity.setStatus(EstadoCursoEnum.EM_ANDAMENTO);
+        if (!l.isEmpty()) ExceptionUtil.throwException(400, "Usuário já está matriculado neste curso.");
 
-        entity = repository.assinaCurso(entity);
+        CursoAlunoDTO entity = contentService.assinarCurso(usuario, cursoId);
+
+        return Response.status(Status.CREATED).entity(entity).build();
+    }
+
+    @POST
+    @Path("/concluirEtapa/{curso_id}")
+    public Response concluirEtapa(@Context ContainerRequestContext requestContext, @PathParam("curso_id") Long cursoId) {
+
+        UsuarioDTO usuario = (UsuarioDTO) requestContext.getProperty("usuario");
+
+        List<CursoAlunoEntity> l = CursoAlunoEntity.find("usuarioId = :usuarioId and curso.id = :cursoId",
+                        Parameters.with("usuarioId", usuario.getId()).and("cursoId", cursoId))
+                .list();
+
+        CursoAlunoDTO entity = null;
+        if (l.isEmpty()) {
+             entity = contentService.assinarCurso(usuario, cursoId);
+        } else {
+            entity = contentService.concluirEtapa(usuario, l.getFirst());
+        }
 
         return Response.status(Status.CREATED).entity(entity).build();
     }
@@ -146,11 +161,21 @@ public class ContentController {
     @Path("/gerarEstadoCursoPdf/{idCurso}")
     @Produces("application/pdf")
     public Response gerarEstadoCurso(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext) {
+        byte[] pdfContent = contentService.gerarEstadoCurso(idCurso, requestContext,"pdf").toByteArray();
         return Response
-                .ok(contentService.gerarEstadoCurso(idCurso, requestContext,"pdf"))
+                .ok(pdfContent)
                 .type("application/pdf")
                 .build();
     }
 
+    @GET
+    @Path("/gerarListaMatriculas/html")
+    @Produces(MediaType.TEXT_HTML)
+    public Response gerarListaMatriculasHtml(@Context ContainerRequestContext requestContext) {
+        return Response
+                .ok(contentService.gerarListaCursosMatriculado(requestContext,"html"))
+                .type(MediaType.TEXT_HTML)
+                .build();
+    }
 
 }   
