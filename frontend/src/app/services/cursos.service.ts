@@ -19,6 +19,10 @@ export class CursosService {
     return this.http.get<any>(`${this.apiUrl}/lerCursosUsuario`,{withCredentials:true});
   }
 
+  getCursoById(idCurso: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/lerCurso/${idCurso}`,{withCredentials:true})
+  }
+
   getAulasCurso(idCurso: any): Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/lerAulaPorCurso/${idCurso}`,{withCredentials:true});
   }

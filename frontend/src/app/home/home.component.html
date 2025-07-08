@@ -28,7 +28,7 @@
 
                 <div class="faixa-inferior">
                     <h3>Titulo</h3>
-                    <button routerLink='/curso' class="btn-continuar">Continuar</button>
+                    <button [routerLink]="['/curso', cursosDoUsuario[0]?.id]" class="btn-continuar">Continuar</button>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
 <div class="feedbacks">
     <h1>Seus Cursos</h1>
     <div class="carousel">
-        <app-item *ngFor="let curso of cursosDoUsuario" tipo="item-2" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assistir'></app-item>
+        <app-item *ngFor="let curso of cursosDoUsuario" [routerLink]="['/curso', curso.id]" tipo="item-2" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assistir'></app-item>
     </div>
 </div>
 

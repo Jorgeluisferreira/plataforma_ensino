@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SafeUrlPipe } from '../pipes/safe-url.pipe';
 import { CommonModule } from '@angular/common';
+import { CursosService } from '../services/cursos.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-curso',
@@ -11,23 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './curso.component.css'
 })
 export class CursoComponent {
-  aulas = [
-    {
-      titulo: 'Aula 1 – RockLee vs Gaara',
-      descricao: 'o melhor video de todos.',
-      videoUrl: 'https://www.youtube.com/embed/VgDgWzBL7s4?si=tN8wqao_qYGtxEtk'
-    },
-    {
-      titulo: 'Aula 2 – rock lee vs gaara dnv',
-      descricao: 'pq sim.',
-      videoUrl: 'https://www.youtube.com/embed/VgDgWzBL7s4?si=tN8wqao_qYGtxEtk'
-    },
-    {
-      titulo: 'Aula 3 – O retorno do rei',
-      descricao: 'achou que tinha acabado ?',
-      videoUrl: 'https://www.youtube.com/embed/VgDgWzBL7s4?si=tN8wqao_qYGtxEtk'
-    }
-  ];
+  aulas: any[] = [];
 
   aulaSelecionada = 0;
 
@@ -35,14 +21,30 @@ export class CursoComponent {
   const aula = this.aulas[this.aulaSelecionada] ?? this.aulas[0];
   return {
     ...aula,
-    videoUrl: this.sanitizar(aula.videoUrl)
+    contentURL: this.sanitizar(aula.contentURL)
   };
 }
 
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer,
+    private route: ActivatedRoute,  // Para acessar parâmetros
+    private router: Router          // Para navegação programática
+  ) {}
 
-  ngOnInit(): void {}
+  private cursoService = inject(CursosService);
+
+  ngOnInit(): void {
+
+    const id = this.route.snapshot.paramMap.get('id');
+    this.cursoService.getAulasCurso(id).subscribe({
+      next: (res) => {
+        console.log('aulas', res );
+        this.aulas = res
+      }
+    })
+  }
+
+  
 
   trocarAula(index: number): void {
     this.aulaSelecionada = index;

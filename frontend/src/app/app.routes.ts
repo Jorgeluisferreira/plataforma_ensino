@@ -29,7 +29,7 @@ export const routes: Routes = [{
     },
 },
 {
-    path:'curso',
+    path:'curso/:id',
     pathMatch:'full',
     loadComponent: () => {
         return import('./curso/curso.component').then(m => m.CursoComponent)
