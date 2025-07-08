@@ -35,8 +35,7 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-  const fake = [{ nome: 'Curso Teste', preco: 29.99 },{nome: 'Curso 2', preco: 19.99}];
-  localStorage.setItem('carrinho', JSON.stringify(fake));
+
   this.authService.currentUser$.subscribe(user => {
       this.isLogged = true
   });

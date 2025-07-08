@@ -36,6 +36,23 @@ export class HomeComponent {
     })
   }
 
+  adicionarAoCarrinho(id:any,nome:any, preco:any) {
+  
+    const curso = {id, nome, preco}
+    const carrinhoString = localStorage.getItem('carrinho');
+
+  // Se já tiver itens, parseia; se não, começa com array vazio
+  let carrinho: any[] = carrinhoString ? JSON.parse(carrinhoString) : [];
+
+  // Adiciona o novo item
+  carrinho.push(curso);
+
+  // Salva de volta no localStorage
+  localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+  console.log('Item adicionado ao carrinho:', curso);
+}
+
   ngOnInit(): void {
     this.authService.getUser().subscribe({
       next: (res) => {

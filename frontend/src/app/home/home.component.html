@@ -27,7 +27,7 @@
                 <img src="{{getThumbnailUrl(cursosDoUsuario[0]?.contentURL)}}" alt="Curso em andamento" />
 
                 <div class="faixa-inferior">
-                    <h3>Titulo</h3>
+                    <h3>{{cursosDoUsuario[0]?.nome}}</h3>
                     <button [routerLink]="['/curso', cursosDoUsuario[0]?.id]" class="btn-continuar">Continuar</button>
                 </div>
             </div>
@@ -40,7 +40,7 @@
 <div class="courses">
     <h1>Cursos disponíveis</h1>
     <div class="carousel">
-        <app-item *ngFor="let curso of cursos" (click)="assinarCurso(curso.id)" tipo="item" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assinar'></app-item>
+        <app-item *ngFor="let curso of cursos" (click)="adicionarAoCarrinho(curso.id, curso.nome, 19.99)" tipo="item" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assinar'></app-item>
     </div>
 </div>
 

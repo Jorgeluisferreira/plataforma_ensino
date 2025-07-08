@@ -27,18 +27,14 @@
   <aside class="resumo-pedido">
     <h3>Resumo do Pedido</h3>
     <ul>
-      <li>
-        <span>Curso Angular Avançado</span>
-        <span>R$ 199,00</span>
-      </li>
-      <li>
-        <span>Curso Quarkus Essencial</span>
-        <span>R$ 179,00</span>
+      <li *ngFor="let curso of carrinho">
+        <span>{{curso.nome}}</span>
+        <span>R$ {{curso.preco}}</span>
       </li>
       <hr>
       <li class="total">
         <strong>Total:</strong>
-        <strong>R$ 378,00</strong>
+        <strong>R$ {{total}}</strong>
       </li>
     </ul>
   </aside>
