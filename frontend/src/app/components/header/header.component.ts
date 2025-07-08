@@ -34,7 +34,6 @@ export class HeaderComponent {
   localStorage.setItem('carrinho', JSON.stringify(this.itensCarrinho)); // atualiza armazenamento
   }
 
-
   ngOnInit(): void {
   const fake = [{ nome: 'Curso Teste', preco: 29.99 },{nome: 'Curso 2', preco: 19.99}];
   localStorage.setItem('carrinho', JSON.stringify(fake));

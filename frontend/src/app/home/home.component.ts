@@ -27,6 +27,14 @@ export class HomeComponent {
     return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
   }
 
+  assinarCurso(idCurso: any){
+    return this.cursoService.assinarCurso(idCurso).subscribe({
+      next: (res) => {
+        console.log(res)
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.authService.getUser().subscribe({
       next: (res) => {
