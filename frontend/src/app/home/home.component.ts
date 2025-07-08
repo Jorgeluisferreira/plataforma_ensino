@@ -16,6 +16,7 @@ export class HomeComponent {
   usuario: any; // ou crie um tipo/interface se preferir
 
   cursos: any[] = [];
+  cursosDoUsuario: any[] = [];
 
   constructor(private authService: AuthService) {}
   
@@ -67,6 +68,19 @@ export class HomeComponent {
       }
     })
 
+    this.cursoService.getCursosUsuario().subscribe({
+      next: (cursos) => {
+        console.log('cursos do user', cursos );
+        cursos.forEach((curso: any) => {
+          this.cursoService.getAulasCurso(curso.id).subscribe({
+            next: (res) => {
+              console.log('deveria funcionar', res)
+              curso.contentURL = res[0].contentURL
+            }
+          })
+        })
+        this.cursosDoUsuario = cursos;
+    }});
 
   }
 

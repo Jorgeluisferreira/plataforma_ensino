@@ -21,10 +21,10 @@
 
         <div class="about-right">
             <div class="title">
-                <h1>Continue de onde parou:</h1>
+                <h1>Continue assistindo:</h1>
             </div>
             <div class="card-imagem">
-                <img src="https://www.diariodeinvestimentos.com.br/wp-content/uploads/2021/09/thiago-nigro-primo-rico.jpg" alt="Curso em andamento" />
+                <img src="{{getThumbnailUrl(cursosDoUsuario[0]?.contentURL)}}" alt="Curso em andamento" />
 
                 <div class="faixa-inferior">
                     <h3>Titulo</h3>
@@ -47,7 +47,7 @@
 <div class="feedbacks">
     <h1>Seus Cursos</h1>
     <div class="carousel">
-        <app-item tipo="item-2" titulo="Continue" descricao="descricao do item" botao='Continuar' link='/curso'></app-item>
+        <app-item *ngFor="let curso of cursosDoUsuario" tipo="item-2" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assistir'></app-item>
     </div>
 </div>
 
