@@ -1,8 +1,9 @@
 package grupo1.aps2.service;
 
-import grupo1.aps2.dto.DTOCursoAluno;
 import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoBodyItem;
 import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoDTO;
+import grupo1.aps2.dto.DTODocumento;
+import grupo1.aps2.dto.DTODocumento.DocumentoDTO;
 import grupo1.aps2.dto.DTOUsuario;
 import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.mapper.CursoAlunoMapper;
@@ -15,13 +16,12 @@ import grupo1.aps2.service.relatorios.DocumentoTemplate;
 import grupo1.aps2.service.relatorios.EstadoCursoDocumentoTemplate;
 import grupo1.aps2.service.relatorios.ListaCursosMatriculadoDocumentoTemplate;
 import grupo1.aps2.service.relatorios.factory.DocumentoFactory;
+import grupo1.aps2.service.relatorios.factory.DocumentoFactorySelector;
 import grupo1.aps2.service.relatorios.template.BodyItem;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.core.Context;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
@@ -40,7 +40,10 @@ public class ContentService {
     @Inject
     CursoMapper cursoMapper;
 
-    public ByteArrayOutputStream gerarEstadoCurso(Long idCurso, ContainerRequestContext requestContext, String fileFormat) {
+    @Inject
+    DocumentoFactorySelector documentoFactorySelector;
+
+    public DocumentoDTO gerarEstadoCurso(Long idCurso, ContainerRequestContext requestContext, String fileFormat) {
         CursoAlunoEntity qParams = new CursoAlunoEntity();
         DTOUsuario.UsuarioDTO usuario = (DTOUsuario.UsuarioDTO) requestContext.getProperty("usuario");
 
@@ -65,7 +68,8 @@ public class ContentService {
                             cursoMapper.map(qParams.getCurso()),
                             EstadoCursoEnum.NAO_MATRICULADO, null)));
 
-            DocumentoFactory factory = DocumentoFactory.getFactoryForFileFormat(fileFormat);
+            DocumentoDTO docDto = new DocumentoDTO();
+            DocumentoFactory factory = documentoFactorySelector.getFactoryForFileFormat(fileFormat);
             return factory.create(doc);
 
         }
@@ -74,11 +78,11 @@ public class ContentService {
         doc.setUsuario(usuario);
         doc.setBodyContent(List.of((BodyItem) cursoAlunoMapper.toBodyItem(curso, usuario)));
 
-        DocumentoFactory factory = DocumentoFactory.getFactoryForFileFormat(fileFormat);
+        DocumentoFactory factory = documentoFactorySelector.getFactoryForFileFormat(fileFormat);
         return factory.create(doc);
     }
 
-    public ByteArrayOutputStream gerarListaCursosMatriculado(ContainerRequestContext requestContext, String fileFormat) {
+    public DocumentoDTO gerarListaCursosMatriculado(ContainerRequestContext requestContext, String fileFormat) {
         CursoAlunoEntity qParams = new CursoAlunoEntity();
         DTOUsuario.UsuarioDTO usuario = (DTOUsuario.UsuarioDTO) requestContext.getProperty("usuario");
 
@@ -91,7 +95,7 @@ public class ContentService {
         DocumentoTemplate doc = new ListaCursosMatriculadoDocumentoTemplate(usuario,
                 cursos.stream().map(c -> cursoAlunoMapper.toBodyItem(c, usuario)).toList());
 
-        DocumentoFactory factory = DocumentoFactory.getFactoryForFileFormat(fileFormat);
+        DocumentoFactory factory = documentoFactorySelector.getFactoryForFileFormat(fileFormat);
         return factory.create(doc);
     }
 

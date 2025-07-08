@@ -4,6 +4,8 @@ import grupo1.aps2.dto.DTOAula;
 import grupo1.aps2.dto.DTOCurso;
 import grupo1.aps2.dto.DTOCurso.CursoDTO;
 import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoDTO;
+import grupo1.aps2.dto.DTODocumento;
+import grupo1.aps2.dto.DTODocumento.DocumentoDTO;
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.exceptions.ExceptionUtil;
 import grupo1.aps2.mapper.AulaMapper;
@@ -148,33 +150,26 @@ public class ContentController {
     }
 
     @GET
-    @Path("/gerarEstadoCursoHtml/{idCurso}")
-    @Produces(MediaType.TEXT_HTML)
-    public Response gerarEstadoCursoHtml(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext) {
+    @Path("/gerarEstadoCurso/{idCurso}/{fileFormat}")
+    @Produces()
+    public Response gerarEstadoCurso(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext, @PathParam("fileFormat") String fileFormat) {
+        DocumentoDTO dto = contentService.gerarEstadoCurso(idCurso, requestContext,fileFormat);
+        byte[] content = dto.getBaos().toByteArray();
         return Response
-            .ok(contentService.gerarEstadoCurso(idCurso, requestContext,"html"))
-            .type(MediaType.TEXT_HTML)
-            .build();
-    }
-
-    @GET
-    @Path("/gerarEstadoCursoPdf/{idCurso}")
-    @Produces("application/pdf")
-    public Response gerarEstadoCurso(@PathParam("idCurso") Long idCurso, @Context ContainerRequestContext requestContext) {
-        byte[] pdfContent = contentService.gerarEstadoCurso(idCurso, requestContext,"pdf").toByteArray();
-        return Response
-                .ok(pdfContent)
-                .type("application/pdf")
+                .ok(content)
+                .type(dto.getMediaType())
                 .build();
     }
 
     @GET
-    @Path("/gerarListaMatriculas/html")
+    @Path("/gerarListaMatriculas/{fileFormat}")
     @Produces(MediaType.TEXT_HTML)
-    public Response gerarListaMatriculasHtml(@Context ContainerRequestContext requestContext) {
+    public Response gerarListaMatriculasHtml(@Context ContainerRequestContext requestContext, @PathParam("fileFormat") String fileFormat) {
+        DocumentoDTO dto = contentService.gerarListaCursosMatriculado(requestContext, fileFormat);
+        byte[] content = dto.getBaos().toByteArray();
         return Response
-                .ok(contentService.gerarListaCursosMatriculado(requestContext,"html"))
-                .type(MediaType.TEXT_HTML)
+                .ok(content)
+                .type(dto.getMediaType())
                 .build();
     }
 

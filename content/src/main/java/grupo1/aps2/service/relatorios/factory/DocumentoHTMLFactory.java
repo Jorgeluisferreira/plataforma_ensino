@@ -1,22 +1,25 @@
 package grupo1.aps2.service.relatorios.factory;
 
+import grupo1.aps2.dto.DTODocumento;
+import grupo1.aps2.dto.DTODocumento.DocumentoDTO;
 import grupo1.aps2.service.relatorios.DocumentoTemplate;
 import grupo1.aps2.service.relatorios.template.Body;
 import grupo1.aps2.service.relatorios.template.BodyItem;
 import grupo1.aps2.service.relatorios.template.Footer;
 import grupo1.aps2.service.relatorios.template.Header;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 
+@ApplicationScoped
 public class DocumentoHTMLFactory implements DocumentoFactory {
 
-    private final StringBuilder html = new StringBuilder();
 
     @Override
-    public ByteArrayOutputStream create(DocumentoTemplate doc) throws WebApplicationException {
+    public DocumentoDTO create(DocumentoTemplate doc) throws WebApplicationException {
         if (doc == null) {
             throw new WebApplicationException("DocumentoTemplate não pode ser nulo", 400);
         }
@@ -29,14 +32,24 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             baos.write(htmlString.getBytes(StandardCharsets.UTF_8));
             baos.flush();
-            return baos;
+            return new DocumentoDTO(baos, getMediaType());
         } catch (Exception e) {
             throw new WebApplicationException("Erro ao gerar HTML: " + e.getMessage(), 500);
         }
     }
 
-    public String generateHtml(DocumentoTemplate doc) throws WebApplicationException {
+    @Override
+    public String getFileFormatAbreviation() {
+        return "html";
+    }
 
+    @Override
+    public String getMediaType() {
+        return "text/html";
+    }
+
+    public String generateHtml(DocumentoTemplate doc) throws WebApplicationException {
+        StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>");
         html.append("<html lang=\"pt-BR\">");
 
