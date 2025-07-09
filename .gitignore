@@ -4,6 +4,8 @@ postgres-data/
 .idea
 .vscode
 
+
 # Public/private keys
 
 # Local Database files
+.mv.db
