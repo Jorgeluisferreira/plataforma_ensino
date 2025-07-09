@@ -51,7 +51,7 @@ public class ListaCursosMatriculadoDocumentoTemplate extends DocumentoTemplate {
 
     @Override
     protected String getBodyTitle() {
-        return "Lista de Cursos Matriculado";
+        return "Lista de Cursos Matriculados";
     }
 
     @Override

@@ -4,6 +4,7 @@ import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.service.relatorios.template.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public abstract class DocumentoTemplate {
@@ -23,11 +24,15 @@ public abstract class DocumentoTemplate {
         Body bd = new Body();
         bd.setConteudo(getBodyContent() != null ? getBodyContent() : List.of());
         bd.setTitulo(getBodyTitle() != null ? getBodyTitle() : "");
+        bd.setOriginalTimestamp(getDocumentOriginalTimestamp().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         return bd;
     }
 
     public Footer getFooter() {
-        return new Footer("© 2025 Areas Academy");
+        Footer f = new Footer();
+        f.setExpirationDate(getDocumentExpirationTimestamp().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        f.setRodape("© 2025 Areas Academy");
+        return f;
     }
 
     public abstract UsuarioDTO getUsuario();

@@ -7,9 +7,11 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 public class Footer {
+    private String expirationDate;
     private String rodape;
 
     public Footer() {
         this.rodape = "";
+        this.expirationDate = "";
     }
 }

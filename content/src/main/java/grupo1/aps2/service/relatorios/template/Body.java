@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 public class Body {
     private List<BodyItem> conteudo;
     private String titulo;
+    private String originalTimestamp;
 
         public Stream<BodyItem> getConteudoStream() {
         return conteudo != null ? conteudo.stream() : Stream.empty();

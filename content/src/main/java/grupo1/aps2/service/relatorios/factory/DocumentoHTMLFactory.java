@@ -3,10 +3,7 @@ package grupo1.aps2.service.relatorios.factory;
 import grupo1.aps2.dto.DTODocumento;
 import grupo1.aps2.dto.DTODocumento.DocumentoDTO;
 import grupo1.aps2.service.relatorios.DocumentoTemplate;
-import grupo1.aps2.service.relatorios.template.Body;
-import grupo1.aps2.service.relatorios.template.BodyItem;
-import grupo1.aps2.service.relatorios.template.Footer;
-import grupo1.aps2.service.relatorios.template.Header;
+import grupo1.aps2.service.relatorios.template.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
 
@@ -63,14 +60,16 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
 
     private String genHeader(DocumentoTemplate doc) {
         Header header = doc.getHeader();
-        String titulo = header != null && header.getTitulo() != null ? header.getTitulo() : "";
+        Title title = doc.getTitle();
+        String titulo = title.getTitulo() != null ? title.getTitulo() : "";
         String dataHora = header != null && header.getDataHora() != null
                 ? header.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
                 : "";
 
-        return "<meta charset=\"UTF-8\"/>"
-                + "<title>" + titulo + "</title>"
-                + "<style>body { font-family: Arial, sans-serif; }</style>"
+        return "<head>"
+                + "<meta charset=\"UTF-8\"/>"
+                + "<h2>" + titulo + "</h2>"
+                + "</head>"
                 + "<div style='font-size:small;color:gray;'>Gerado em: " + dataHora + "</div>";
 
     }
@@ -84,11 +83,11 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
         StringBuilder body = new StringBuilder();
 
         if (doc.getUsuario() != null) {
-
             body.append("<div>")
                 .append("<h4>Documento referente à: </h4>")
-                .append("<p>Nome: ").append(doc.getUsuario().getNome())
-                .append("<br>Função: ").append(doc.getUsuario().getRole()).append("</p>")
+                .append("<p><b>Nome: </b>").append(doc.getUsuario().getNome())
+                .append("<br><b>Função: </b>").append(doc.getUsuario().getRole())
+                .append("<br><b>Data: </b>").append(doc.getBody().getOriginalTimestamp()).append("</p>")
                 .append("</div>");
         }
 
