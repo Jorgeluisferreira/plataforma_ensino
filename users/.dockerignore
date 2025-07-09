@@ -1,5 +1,13 @@
+# Ignora tudo
 *
+# Mas NÃO ignora pom.xml e src
+!pom.xml
+!src/**
+# E permite também os arquivos target se quiser
 !target/*-runner
 !target/*-runner.jar
 !target/lib/*
 !target/quarkus-app/*
+# E permite a chave
+!publicKey.pem
+
