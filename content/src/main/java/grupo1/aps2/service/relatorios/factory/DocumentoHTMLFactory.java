@@ -50,9 +50,11 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
         html.append("<!DOCTYPE html>");
         html.append("<html lang=\"pt-BR\">");
 
+        html.append("<body style='font-family:Arial, sans-serif; margin:20px;'>");
         html.append(genHeader(doc));
         html.append(genBody(doc));
         html.append(genFooter(doc));
+        html.append("</body>");
         html.append("</html>");
 
         return html.toString();
@@ -93,25 +95,32 @@ public class DocumentoHTMLFactory implements DocumentoFactory {
 
         Body itemBody = doc.getBody();
         if (itemBody != null) {
+            body.append("<div><strong>NOME</strong> DESCRIÇÃO <em>(ESTADO)</em></div>");
+            body.append("<ul>");
             for (BodyItem item : itemBody.getConteudo()) {
-                body.append("<div><strong>")
+                body.append("<li>")
+                        .append("<strong>")
                         .append(item.getNome())
                         .append("</strong> ")
                         .append(item.getDescricao());
                 if (item.getEstadoItem() != null && !item.getEstadoItem().isBlank()) {
                     body.append(" <em>(")
                             .append(item.getEstadoItem())
-                            .append(")</em></div>");
+                            .append(")</em>");
                 }
+                body.append("</li>");
             }
+            body.append("</ul>");
         }
         return body.toString();
     }
 
     private String genFooter(DocumentoTemplate doc) {
         Footer footer = doc.getFooter();
-        return "<footer style='margin-top:2em;font-size:small;color:gray;'>"
-                + (footer != null && footer.getRodape() != null ? footer.getRodape() : "")
-                + "</footer>";
+        if (footer == null) return "";
+        return "<div style='margin-top:2em;font-size:small;color:gray;'>"
+                + (footer.getRodape() != null ? footer.getRodape() : "")
+                + " - Valido até: " + (footer.getExpirationDate() != null? footer.getExpirationDate() : "")
+                + "</div>";
     }
 }
