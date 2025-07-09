@@ -57,6 +57,7 @@ export class AreaUsuarioComponent {
   cursoForm = new FormGroup({
     nome: new FormControl('', Validators.required),
     descricao: new FormControl('', Validators.required),
+    preco: new FormControl('', Validators.required),
     aulas: new FormArray([])
   });
 

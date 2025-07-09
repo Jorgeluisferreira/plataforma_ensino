@@ -124,6 +124,11 @@
             <input type="text" formControlName="descricao" />
           </label>
 
+          <label>
+            Preço:
+            <input type="number" formControlName="preco" />
+          </label>
+
           <div formArrayName="aulas">
             <div *ngFor="let aula of aulas.controls; let i = index" [formGroupName]="i" class="aula-item">
               <label>

@@ -37,17 +37,35 @@
 
 </div>
 
-<div class="courses">
+<div *ngIf="cursos && cursos.length > 0" class="courses">
     <h1>Cursos disponíveis</h1>
     <div class="carousel">
-        <app-item *ngFor="let curso of cursos" (click)="adicionarAoCarrinho(curso.id, curso.nome, 19.99)" tipo="item" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assinar'></app-item>
+        <app-item
+            *ngFor="let curso of cursos"
+            (click)="adicionarAoCarrinho(curso.id, curso.nome, curso.preco)"
+            [tipo]="'item'"
+            [titulo]="curso.nome"
+            [descricao]="curso.descricao"
+            [imagem]="getThumbnailUrl(curso.contentURL)"
+            [botao]="'Assinar'"
+        ></app-item>
     </div>
 </div>
 
-<div class="feedbacks">
+
+
+<div *ngIf="cursosDoUsuario && cursosDoUsuario.length > 0" class="feedbacks">
     <h1>Seus Cursos</h1>
     <div class="carousel">
-        <app-item *ngFor="let curso of cursosDoUsuario" [routerLink]="['/curso', curso.id]" tipo="item-2" titulo="{{curso.nome}}" descricao="{{curso.descricao}}" imagem="{{getThumbnailUrl(curso.contentURL)}}" botao='Assistir'></app-item>
+        <app-item
+            *ngFor="let curso of cursosDoUsuario"
+            [routerLink]="['/curso', curso.id]"
+            [tipo]="'item-2'"
+            [titulo]="curso.nome"
+            [descricao]="curso.descricao"
+            [imagem]="getThumbnailUrl(curso.contentURL)"
+            [botao]="'Assistir'"
+        ></app-item>
     </div>
 </div>
 

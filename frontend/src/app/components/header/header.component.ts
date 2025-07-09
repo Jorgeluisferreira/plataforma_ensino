@@ -36,27 +36,19 @@ export class HeaderComponent {
 
   ngOnInit(): void {
 
-  this.authService.currentUser$.subscribe(user => {
-      this.isLogged = true
-  });
-
-  this.authService.getUser().subscribe({
-      next: (res) => {
-        this.usuario = res;
-        localStorage.setItem('usuario', JSON.stringify(this.usuario));
-        if(this.usuario.roles == 'Aluno'){
-          this.isAluno = true;
-        }
-      },
-      error: (err) => {
-        if (err.status === 400 || err.status === 401) {
-          console.log('Usuário não autenticado. Ignorando erro.');
-          this.authService.logout();
-        } else {
-          console.error('Erro ao carregar usuário:', err);
-        }
+  this.authService.getUserObs().subscribe({
+    next: (res) => {
+      this.usuario = res;
+      this.isLogged = !!this.usuario; // Verifica se o usuário está logado
+      if (this.usuario && this.usuario.roles && this.usuario.roles.includes('Aluno')) {
+        this.isAluno = true;
+      } else {
+        this.isAluno = false;
       }
-    });
+      console.log('Usuário logado:', this.usuario, this.isLogged, this.isAluno);
+
+    }
+  });
   }
 
 

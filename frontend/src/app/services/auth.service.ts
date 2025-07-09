@@ -10,11 +10,14 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:8082/users'; // <- API backend
 
-  private currentUserSubject = new BehaviorSubject<any>(this.getUserFromStorage());
+  private usuarioSubject = new BehaviorSubject<any>(null);
 
-  currentUser$ = this.currentUserSubject.asObservable();
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { 
+    const usuarioSalvo = localStorage.getItem('usuario');
+    if (usuarioSalvo) {
+      this.usuarioSubject.next(JSON.parse(usuarioSalvo));
+    }
+  }
 
   // GET - lista todos os usuários
   getUsers(): Observable<any> {
@@ -23,6 +26,10 @@ export class AuthService {
 
   getUser(): Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/UsuarioInfos`, {}, {withCredentials: true});
+  }
+
+  getUserObs(): Observable<any> {
+    return this.usuarioSubject.asObservable();
   }
   
   // POST - cria um novo usuário
@@ -64,16 +71,11 @@ export class AuthService {
   }
 }
 
-  loginLocal(user: any) {
-    localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSubject.next(user);
-  }
-
   logout(){
     return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true, responseType: 'text' })
     .subscribe({
       next: (res) => {
-        console.log(res);
+        localStorage.removeItem('usuario');
       },
       error: (err) => console.error('Erro ao deslogar', err)
     });
