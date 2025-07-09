@@ -27,24 +27,32 @@
 
       <section *ngSwitchCase="'certificados'" class="certificados">
         
-        <div class="curso-card" *ngFor="let curso of cursosConcluidos">
+        <div class="curso-card" *ngFor="let curso of cursosDoUsuario">
           <div class="imagem-curso">
-            <img [src]="curso.imagemUrl" [alt]="curso.nome" />
-              <div class="progresso-container">
-                <div class="progresso" [style.width.%]="curso.progressoPercentual"></div>
-              </div>
+            <img [src]="getThumbnailUrl(curso.contentURL)" [alt]="curso.nome" />
           </div>
           <h4 class="titulo">{{ curso.nome }}</h4>
           <div class="btn">
-            <button >Gerar certificado</button>
+            <button (click)="abrirCertificadoHtml(curso.id)">Ver certificado</button>
           </div>
         </div>
-
       </section>
 
-      <section *ngSwitchCase="'relatorios'" class="progresso card">
-        <h3>Progresso</h3>
-        <p>Você concluiu 30% do curso.</p>
+      <!-- Modal de visualização do certificado HTML -->
+    <div class="modal-certificado" *ngIf="certificadoHtml">
+      <div class="modal-conteudo">
+        <button class="fechar" (click)="fecharModalCertificado()">X</button>
+        <div class="certificado-html" [innerHTML]="certificadoHtml"></div>
+        <br>
+        <div class="btn">
+          <button (click)="baixarCertificadoPdf()">Gerar PDF</button>
+        </div>
+      </div>
+    </div>
+
+      <section *ngSwitchCase="'relatorios'" class="progresso">
+        <h3>Relatorios</h3>
+          
       </section>
 
       <section *ngSwitchCase="'config'" class="configuracoes">
@@ -172,8 +180,7 @@
       </section>
 
       <section *ngSwitchCase="'relatorios'" class="progresso card">
-        <h3>Progresso</h3>
-        <p>Você concluiu 30% do curso.</p>
+        <h3>Relatorios</h3>
       </section>
 
       <section *ngSwitchCase="'config'" class="configuracoes">

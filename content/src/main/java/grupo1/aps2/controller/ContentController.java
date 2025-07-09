@@ -1,10 +1,13 @@
 package grupo1.aps2.controller;
 
+import java.util.List;
+
+import org.jboss.resteasy.reactive.RestResponse.Status;
+
 import grupo1.aps2.dto.DTOAula;
 import grupo1.aps2.dto.DTOCurso;
 import grupo1.aps2.dto.DTOCurso.CursoDTO;
 import grupo1.aps2.dto.DTOCursoAluno.CursoAlunoDTO;
-import grupo1.aps2.dto.DTODocumento;
 import grupo1.aps2.dto.DTODocumento.DocumentoDTO;
 import grupo1.aps2.dto.DTOUsuario.UsuarioDTO;
 import grupo1.aps2.exceptions.ExceptionUtil;
@@ -20,14 +23,16 @@ import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.jboss.resteasy.reactive.RestResponse.Status;
-
-import java.util.List;
 
 @ApplicationScoped
 @Path("content")

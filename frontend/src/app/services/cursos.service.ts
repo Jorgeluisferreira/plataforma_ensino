@@ -44,4 +44,8 @@ export class CursosService {
      return this.http.post(`${this.apiUrl}/assinarCurso/${idCurso}`, {}, {withCredentials:true});
   }
 
+  gerarCertificado(idCurso: any,tipo:any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gerarEstadoCurso/${idCurso}/${tipo}`, { responseType: 'blob', withCredentials: true });
+  }
+
 }

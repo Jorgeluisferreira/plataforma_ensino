@@ -145,6 +145,73 @@ export class AreaUsuarioComponent {
     return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
   }
 
+  // gerarCertificado(cursoId: any,tipo: any){
+  //   this.cursoService.gerarCertificado(cursoId, tipo).subscribe({
+  //     next: (res) => {
+  //       if (tipo === 'pdf') {
+  //       // PDF: download
+  //       const blob = new Blob([res], { type: 'application/pdf' });
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.href = url;
+  //       a.download = `certificado_${cursoId}.pdf`;
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
+  //       window.URL.revokeObjectURL(url);
+  //     } else if (tipo === 'html') {
+  //       // HTML: abrir em nova aba
+  //       const blob = new Blob([res], { type: 'text/html' });
+  //       const url = window.URL.createObjectURL(blob);
+  //       window.open(url, '_blank');
+  //       // Opcional: revogar depois de um tempo
+  //       setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+  //     }
+  //   }
+  //   });
+  // }
+
+  certificadoHtml: string | null = null;
+certificadoCursoId: number | null = null;
+
+abrirCertificadoHtml(cursoId: number) {
+  this.cursoService.gerarCertificado(cursoId, 'html').subscribe({
+  next: (res) => {
+    if (res instanceof Blob) {
+      res.text().then(html => {
+        this.certificadoHtml = html;
+        this.certificadoCursoId = cursoId;
+      });
+    } else {
+      this.certificadoHtml = res;
+      this.certificadoCursoId = cursoId;
+    }
+  }
+});
+}
+
+fecharModalCertificado() {
+  this.certificadoHtml = null;
+  this.certificadoCursoId = null;
+}
+
+baixarCertificadoPdf() {
+  if (!this.certificadoCursoId) return;
+  this.cursoService.gerarCertificado(this.certificadoCursoId, 'pdf').subscribe({
+    next: (res) => {
+      const blob = new Blob([res], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `certificado_${this.certificadoCursoId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+  });
+}
+
   ngOnInit(): void {
 
     this.cursoService.getAulas().subscribe({
