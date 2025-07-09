@@ -59,8 +59,16 @@ export class HomeComponent {
       next: (res) => {
         this.usuario = res;
         console.log('Usuário logado:', this.usuario);
+        if(this.usuario == null){
+          this.authService.getUser().subscribe({
+            next: (res) => {
+              console.log('Usuário logado:', res);
+              this.usuario = res;
+              localStorage.setItem('usuario', JSON.stringify(this.usuario));
+            }
+        })
       }
-    });
+    }});
 
     this.cursoService.getCursos().subscribe({
       next: (res) => {

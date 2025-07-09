@@ -46,6 +46,7 @@ export class AuthService {
       Authorization: 'Basic ' + btoa(`${email}:${password}`)
     };
     return this.http.post(`${this.apiUrl}/login`,{}, {headers, withCredentials: true, responseType: 'text'});
+
   }
 
   // PUT - atualiza usuário
@@ -58,18 +59,7 @@ export class AuthService {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
-  getUserFromStorage() {
-  const raw = localStorage.getItem('user');
-  if (!raw) return null;
 
-  try {
-    return JSON.parse(raw);
-  } catch (e) {
-    console.warn('Erro ao ler user do localStorage:', e);
-    localStorage.removeItem('user'); // limpa o dado inválido
-    return null;
-  }
-}
 
   logout(){
     return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true, responseType: 'text' })

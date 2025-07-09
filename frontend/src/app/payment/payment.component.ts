@@ -17,6 +17,7 @@ export class PaymentComponent {
   numeroCartao: string = '';
   validade: string = '';
   cvv: string = '';
+  metodoPagamento: string = 'credito';
 
   carrinho: any[] = [];
   total: any = '';
@@ -39,7 +40,7 @@ export class PaymentComponent {
         nome: this.nomeCartao,
         email: 'usuario@email.com' // preencher com email do usuário logado
       },
-      paymentMethod: 'credit',
+      paymentMethod: this.metodoPagamento,
       amount: this.total,
       status: 'PENDING'
     };
@@ -51,7 +52,8 @@ export class PaymentComponent {
           this.assinarCurso(item.id)
         }
 
-        this.router.navigate(['/confirmacao']); // exemplo: página de confirmação
+        localStorage.removeItem('carrinho');
+        this.router.navigate(['/obrigado']); // exemplo: página de confirmação
       },
       error: (err) => {
         console.error('Erro no pagamento', err);

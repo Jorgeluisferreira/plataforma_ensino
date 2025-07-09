@@ -35,4 +35,11 @@ export const routes: Routes = [{
         return import('./curso/curso.component').then(m => m.CursoComponent)
     },
 },
+{
+    path:'obrigado',
+    pathMatch:'full',
+    loadComponent: () => {
+        return import('./obrigado/obrigado.component').then(m => m.ObrigadoComponent)
+    },
+},
 ];

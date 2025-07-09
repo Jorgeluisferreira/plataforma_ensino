@@ -1,0 +1,39 @@
+.agradecimento-container {
+  text-align: center;
+  justify-content: center;
+  padding: 60px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.agradecimento-container h1 {
+  color: #28a745;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.agradecimento-container p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.btn-voltar {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #C2410C;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #F97316;
+  cursor: pointer;
+}

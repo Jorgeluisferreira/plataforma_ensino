@@ -69,3 +69,72 @@
   font-size: 1.1em;
   margin-top: 10px;
 }
+
+.metodo-pagamento {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.metodo-pagamento input[type="radio"] {
+  display: none;
+}
+
+.metodo-pagamento label {
+  display: flex;
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.metodo-pagamento label i {
+  margin-right: 8px;
+}
+
+.metodo-pagamento label svg{
+  width:18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.metodo-pagamento input[type="radio"]:checked + label {
+  border-color: #007bff;
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+.metodo-pagamento label:hover {
+  background-color: #e0e0e0;
+}
+
+.btn {
+  background-color: #C2410C; /* Verde elegante */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  background-color: #F97316;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  background-color: #F97316;
+}
