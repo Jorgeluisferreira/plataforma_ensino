@@ -51,6 +51,25 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  cadastroProf(){
+    const newUser = {
+      nome: this.nome,
+      email: this.email,
+      senha: this.senha,
+      roles: 2
+    };
+    this.authServise.createProf(newUser).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.nome = '';
+        this.email ='';
+        this.senha ='';
+        this.roles = 1;
+      },
+      error: (err) => console.error('Erro ao cadastrar professor:', err)
+    });
+  }
+
   cadastrar() {
     const newUser = {
       nome: this.nome,

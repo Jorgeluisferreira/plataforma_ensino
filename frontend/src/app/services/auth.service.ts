@@ -40,6 +40,12 @@ export class AuthService {
     });
   }
 
+  createProf(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cadastrarProfessor`, data, {
+      responseType: 'text' as 'json'
+    });
+  }
+
   //POST - login de usuario
   login(email:string, password:string): Observable<any>{
     const headers = {

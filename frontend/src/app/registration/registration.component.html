@@ -12,6 +12,9 @@
         <div class="btn">
             <a class="button" (click)="sendData()" type="submit">{{isRegistering ? 'Cadastrar' : 'Entrar'}}</a>
         </div>
+        <div *ngIf="isRegistering" class="btn">
+            <a class="button" (click)="cadastroProf()" type="submit">cadastrar como professor</a>
+        </div>
         <a (click)="toggleForm()">{{ isRegistering ? 'já possui conta ? Fazer login' : 'Não possui conta ? Cadastre-se'}}</a>
     </form>
 
