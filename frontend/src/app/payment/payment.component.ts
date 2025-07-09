@@ -39,9 +39,9 @@ export class PaymentComponent {
         nome: this.nomeCartao,
         email: 'usuario@email.com' // preencher com email do usuário logado
       },
-      paymentMethod: 'CARD',
+      paymentMethod: 'credit',
       amount: this.total,
-      status: 'PENDING'      
+      status: 'PENDING'
     };
 
     this.paymentService.processPayment(paymentData).subscribe({
@@ -58,7 +58,7 @@ export class PaymentComponent {
         alert('Erro ao processar o pagamento.');
       }
     });
-  } 
+  }
 
   ngOnInit(): void {
     const dados = localStorage.getItem("carrinho")
