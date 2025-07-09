@@ -18,7 +18,7 @@
             <img [src]="getThumbnailUrl(curso.contentURL)" [alt]="curso.nome" />
           </div>
           <h4 class="titulo">{{ curso.nome }}</h4>
-          <div class="btn">
+          <div [routerLink]="['/curso', curso.id]" class="btn">
             <button >Assistir</button>
           </div>
         </div>

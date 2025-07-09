@@ -8,10 +8,11 @@ import { HeaderComponent } from '../components/header/header.component';
 import { FormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { CursosService } from '../services/cursos.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-area-usuario',
-  imports: [CommonModule, MenuLateralComponent, FormsModule,ReactiveFormsModule, ItemComponent, HeaderComponent],
+  imports: [CommonModule, RouterModule, MenuLateralComponent, FormsModule,ReactiveFormsModule, ItemComponent, HeaderComponent],
   templateUrl: './area-usuario.component.html',
   styleUrl: './area-usuario.component.css'
 })

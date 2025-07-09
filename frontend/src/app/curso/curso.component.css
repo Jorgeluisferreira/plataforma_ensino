@@ -71,6 +71,24 @@
   background-color: #cdd8fc;
 }
 
+.aula-btn{
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: #ebf0ff;
+  color: #333;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover{
+    background-color: #0F172A;
+    color: white;
+    font-weight: bold;
+  }
+}
+
 .aula-lista .atual {
   background-color: #0F172A;
   color: white;

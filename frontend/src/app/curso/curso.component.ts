@@ -44,8 +44,18 @@ export class CursoComponent {
     })
   }
 
-  
-
+  concluirCurso(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.cursoService.concluirCurso(id).subscribe({
+      next: (res) => {
+        console.log('Curso concluído', res);
+        this.router.navigate(['/areaUsuario']);
+      },
+      error: (err) => {
+        console.error('Erro ao concluir curso', err);
+      }
+    });
+  }
   trocarAula(index: number): void {
     this.aulaSelecionada = index;
   }
