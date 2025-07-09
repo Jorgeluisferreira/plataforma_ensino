@@ -60,7 +60,7 @@ body {
 
 .usuario-cursos,
 .certificados,
-.progresso {
+.relatorios {
   display: flex;
   width: 100%;
   background-color: var(--accent-color);

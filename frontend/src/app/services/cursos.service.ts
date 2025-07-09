@@ -52,4 +52,7 @@ export class CursosService {
     return this.http.post(`${this.apiUrl}/concluirEtapa/${idCurso}`, {}, {withCredentials:true});
   }
 
+  gerarRelatorio(formato: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gerarListaMatriculas/${formato}`, { responseType: 'blob', withCredentials: true });
+  }
 }

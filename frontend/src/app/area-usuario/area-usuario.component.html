@@ -50,10 +50,26 @@
       </div>
     </div>
 
-      <section *ngSwitchCase="'relatorios'" class="progresso">
-        <h3>Relatorios</h3>
-          
+      <section *ngSwitchCase="'relatorios'" class="relatorios">
+        <div>
+          <h3>Relatorios</h3>
+          <div class="btn">
+            <button (click)="abrirRelatorioHtml()">Relatório Cursos inscritos</button>
+          </div>
+        </div>
       </section>
+
+        <!-- Modal de visualização do relatorio HTML -->
+      <div class="modal-certificado" *ngIf="relatorioHtml">
+        <div class="modal-conteudo">
+          <button class="fechar" (click)="fecharModalRelatorio()">X</button>
+          <div class="certificado-html" [innerHTML]="relatorioHtml"></div>
+          <br>
+          <div class="btn">
+            <button (click)="baixarRelatorioPdf()">Gerar PDF</button>
+          </div>
+        </div>
+      </div>
 
       <section *ngSwitchCase="'config'" class="configuracoes">
         <h2>Configurações da Conta</h2>
