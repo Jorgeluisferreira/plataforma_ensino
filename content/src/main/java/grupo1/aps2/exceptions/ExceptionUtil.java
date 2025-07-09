@@ -8,6 +8,16 @@ public class ExceptionUtil {
         throw new WebApplicationException(
                 Response.status(status)
                         .entity(new MensagemErro(mensagem))
+                        .type("application/json")
+                        .build()
+        );
+    }
+
+    public static WebApplicationException createWebApplicationException(int status, String mensagem) {
+        return new WebApplicationException(
+                Response.status(status)
+                        .entity(new MensagemErro(mensagem))
+                        .type("application/json")
                         .build()
         );
     }
