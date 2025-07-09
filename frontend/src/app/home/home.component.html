@@ -19,7 +19,7 @@
             <p>Pronto para retomar os estudos ?</p>
         </div>
 
-        <div class="about-right">
+        <div *ngIf="cursosDoUsuario && cursosDoUsuario.length > 0"  class="about-right">
             <div class="title">
                 <h1>Continue assistindo:</h1>
             </div>
@@ -37,8 +37,8 @@
 
 </div>
 
-<div *ngIf="cursos && cursos.length > 0" class="courses">
-    <h1>Cursos disponíveis</h1>
+<div class="courses">
+    <h1>Cursos disponíveis</h1> 
     <div class="carousel">
         <app-item
             *ngFor="let curso of cursos"
@@ -46,7 +46,7 @@
             [tipo]="'item'"
             [titulo]="curso.nome"
             [descricao]="curso.descricao"
-            [imagem]="getThumbnailUrl(curso.contentURL)"
+            [imagem]="curso.contentURL ? getThumbnailUrl(curso.contentURL) : ''"
             [botao]="'Assinar'"
         ></app-item>
     </div>
@@ -63,7 +63,7 @@
             [tipo]="'item-2'"
             [titulo]="curso.nome"
             [descricao]="curso.descricao"
-            [imagem]="getThumbnailUrl(curso.contentURL)"
+            [imagem]="curso.contentURL ? getThumbnailUrl(curso.contentURL) : ''"
             [botao]="'Assistir'"
         ></app-item>
     </div>

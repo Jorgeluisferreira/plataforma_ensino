@@ -23,6 +23,7 @@ export class HomeComponent {
   private cursoService = inject(CursosService);
 
   getThumbnailUrl(videoUrl: string): string {
+    if (!videoUrl) return '';
     const match = videoUrl.match(/(?:embed\/|v=)([^?&]+)/);
     const videoId = match ? match[1] : null;
     return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
@@ -54,19 +55,10 @@ export class HomeComponent {
 }
 
   ngOnInit(): void {
-    this.authService.getUser().subscribe({
+    this.authService.getUserObs().subscribe({
       next: (res) => {
-        console.log('Usuário logado:', res);
         this.usuario = res;
-        localStorage.setItem('usuario', JSON.stringify(this.usuario));
-      },
-      error: (err) => {
-        if (err.status === 400 || err.status === 401) {
-          console.log('Usuário não autenticado. Ignorando erro.');
-          this.authService.logout();
-        } else {
-          console.error('Erro ao carregar usuário:', err);
-        }
+        console.log('Usuário logado:', this.usuario);
       }
     });
 
@@ -81,7 +73,7 @@ export class HomeComponent {
           })
         })
         this.cursos = res
-        console.log(res)
+        console.log("cursos", this.cursos);
       }
     })
 
