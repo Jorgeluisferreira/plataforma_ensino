@@ -1,6 +1,2 @@
--- This file allow to write SQL commands that will be emitted in test and dev.
--- The commands are commented as their support depends of the database
--- insert into myentity (id, field) values(1, 'field-1');
--- insert into myentity (id, field) values(2, 'field-2');
--- insert into myentity (id, field) values(3, 'field-3');
--- alter sequence myentity_seq restart with 4;
+INSERT INTO UsuarioEntity (nome, email, senha, roles) VALUES ('Jorge Luis', 'jorge@aluno.com', '$2a$12$p1KxYpe8NArg/qpDoUWqveczKxG3kiM6j.iBSyA6Sis7GV30i9Kxm', 'Aluno');
+INSERT INTO UsuarioEntity (nome, email, senha, roles) VALUES ('Marcelo', 'areas@prof.com', '$2a$10$7EqJtq98hPqEX7fNZaFWoOa5r2KQ8V5Qx1h8A8w5rE4pQqFQx1h8W', 'Aluno');
